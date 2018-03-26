@@ -1,0 +1,140 @@
+* {
+    font-family: "Roboto", sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+
+.container {    
+    padding: 10px;
+    max-width: 650px;
+    margin: 0 auto;    
+}
+
+.messages {
+    width: 100%;
+    display: inline-block;
+    margin: 15px;
+    padding: 30px;
+    color: #1a9944;
+    border-radius: 5px;
+    padding-left: 70px;
+    background: #baffba url("https://freeiconshop.com/files/edd/checkmark-flat.png") no-repeat;
+    background-size: 35px 35px;
+    background-position: 2% 50%;
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #4386d3;
+    transform: rotate(90deg);
+    transition: 0.5s ease-in-out;
+}
+
+.field {    
+    width: 400px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.create, .meeting {
+    margin: 10px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.create:hover, .meeting:hover {
+    transform: scale(1.1, 1.1);
+    transition: 0.2s ease-in-out;
+
+}
+
+.create:hover { 
+    color: white;
+    background-color: #999999;
+    box-shadow: 2 2 0.2 1 black;
+}
+
+.meeting:hover { 
+    background-color: #b2652e
+}
+
+form.create-form {
+    display: inline-block;
+    width: 100px;
+    margin: 0;
+}
+
+.create-btn {
+    display: inline-block;
+    width: 100px;
+    cursor: pointer;
+}
+
+.del-btn {
+    background-color: #4386d3;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.cnfm-btn {
+    background-color: #4386d3;
+    border: none;
+    width: 100%;
+    margin-left: 15px;
+}
+
+.create-btn, .del-btn {    
+    margin: 5px;
+    height: 30px;
+    border: none;
+    padding-bottom: 0px;
+    background-color: #4386d3;
+    color: white;
+}
+
+.meeting {        
+    color: white;
+    background-color: #E88640;    
+}
+
+
+.arrow {
+    color: black;
+    text-decoration: none;
+    font-size: 200%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;    
+}
+
+.arrow:hover {
+    color: #4386d3;
+    transform: scale(1.1, 1.1);
+    transition: 0.2s;
+}
+
+#results, #students {
+    margin-top: 80px;
+    padding: 10px;
+    margin-left: 30px;
+    background-color: #eee;
+    display: inline-block;    
+    min-width: 234px;    
+}
+
+#students {
+    margin-top: 40px;    
+}
+
+#students:empty, #results:empty {
+  display:none;
+}
+
