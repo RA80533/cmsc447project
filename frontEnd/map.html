@@ -25,140 +25,216 @@
 
       }
     
-      .dual_map {
-
-        height: 60%;
-        width: 49%;
-        display: inline-block;     
-
-      }
-
       .main_map{
 
         height: 70%;
-        width: 70%;
+        width: 48%;
         display: inline-block;
  
        }
 
-      .alaska_map {
-        height: 25%;
-        width: 24%; 
+      .zip_list {
+
+        height: 35%;
+        width: 40%; 
         display: inline-block;
         
       }
 
-      .hawaii_map{
-        height: 25%;
-        width: 24%; 
+      .current_zip{
+
+        height: 35%;
+        width: 40%; 
         display: inline-block;
 
       }
 
+      .zip_frame{
+
+        height: 70%;
+        width: 40%;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+
+      }
+
+    .modal {
+
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 137px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 48%; /* Full width */
+        height: 73%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+    }
+
+    .modal-content {
+    
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 66%;
+
+    }
+
+    .divider{
+        width:98px;
+        height:auto;
+        display:inline-block;
+    }
+
+    .modal-yes{
+
+    }
+
+    .modal-no{
+
+
+    }
+
     </style>
   </head>
-  <body>
 
+  <body>
+  
   <button type="button" onclick="resetMap()">Reset Map Zoom</button>
+  <div class="divider"></div>
+  <button type="button" onclick="clearModal()">Reset Zip Data</button>
+  <div class="divider"></div>
+  <input id="userzip" type="textbox" value="">
+  <input id="submit" type="button" value="Search for Zip Code">  
 
   <div class="container">
-    <div class="main_map" id="main_map"></div>
-  <!--  <div class="dual_map">
-        <div class="alaska_map" id="alaska_map"></div><br>
-        <div class="hawaii_map" id="hawaii_map"></div> -->
+
+    <div id="zip_modal" class="modal">
+
+      <div class="modal-content">
+        <p>Information about this zip code is displayed to the right of the map.<br>
+           Would you like to add this zip code to a list, to compare it to other zip codes?</p><br>
+           <button type="button" onclick="addtoList()">Yes</button>
+           <button type="button" onclick="hideModal()">No</button>
+      </div>
+
     </div>
+
+    <div id="clear_modal" class="modal">
+
+      <div class="modal-content">
+        <p>Clear all zip code data?</p><br>
+           <button type="button" onclick="clearAllZips()">Yes</button>
+           <button type="button" onclick="hideModal()">No</button>
+      </div>
+
+    </div>
+
+    <div id="clear_modal_none" class="modal">
+
+      <div class="modal-content">
+        <p>There is no data to clear.</p><br>
+           <button type="button" onclick="hideModal()">Ok</button>
+      </div>
+
+    </div>
+
+    <div class="main_map" id="main_map"></div>
+
+    <div class="zip_frame" id="zip_frame">
+      <div class="current_zip" id="current_zip"></div><br>
+      <div class="zip_list" id="zip_list"></div><br>
+      <button type="button" id="compare">Compare Zip Codes</button>      
+    </div>
+
   </div>
 
   <script>
 
   var main_map;
-  var marker_arr = new Array();
+  var glob_zip;
+  var zip_arr = new Array();
   var marker_index = 0;
+  var num_zips_selected = 0;
+  var zip_list_html = "No zip codes selected.";
+  document.getElementById('compare').style.display = "none";
 
   function initMap() {
 
       main_map = null;
 
       var myLatlng = {lat: 38, lng: -95};
+ 
+      // Default list when 0 zip codes are in the list.
+      document.getElementById('zip_list').innerHTML = zip_list_html;
 
       main_map = new google.maps.Map(document.getElementById('main_map'), {
-        zoom: 4.9,
+        zoom: 4.1,
         center: myLatlng
        });
 
       /* Listen for mouse clicks, zoom there. */
       main_map.addListener('click', function(e) {
-      mapZoom(e.latLng, main_map);
+
+          mapZoom(e.latLng, main_map);
+
       });
 
-      main_map.data.loadGeoJson('https://raw.githubusercontent.com/OpenDataDE/State-zip-code-GeoJSON/master/ak_alaska_zip_codes_geo.min.json');
-      main_map.data.setStyle({
-
-            cursor: 'default'
-            
-       });
-      main_map.data.addListener('click', function(e) {
-      zipZoom(e.latLng, main_map);
+      // Listen for clicks on the zip search button.
+      var geocoder = new google.maps.Geocoder();
+      document.getElementById('submit').addEventListener('click', function() {
+          zipSearch(geocoder);
       });
-      
  
-      /* Create the zip code layer.
-      var layer = new google.maps.FusionTablesLayer({
-        suppressInfoWindows: true,
-        query: {
-        select: 'geometry',
-        from: '1kNjIhqt7q-OuWMXf-U4PWLleNndKnrlWtd1aE6Ki',
+      // Add some data layers to play with.
+      // main_map.data.loadGeoJson('https://raw.githubusercontent.com/OpenDataDE/State-zip-code-GeoJSON/master/ak_alaska_zip_codes_geo.min.json');
+      main_map.data.loadGeoJson('https://raw.githubusercontent.com/OpenDataDE/State-zip-code-GeoJSON/master/sd_south_dakota_zip_codes_geo.min.json');
+
+      // main_map.data.setStyle({visible: false});
+
+      // When the user clicks, set 'isColorful', changing the color of the letters.
+      main_map.data.addListener('click', function(event) {
+
+            event.feature.setProperty('isColorful', true);
+      }); 
+
+      main_map.data.addListener('click', function(e) {
+
+        zipZoom(e.latLng, main_map);
+
+      });
+
+      main_map.data.setStyle(function(feature) {
+        var color = 'gray';
+        if (feature.getProperty('isColorful')) {
+          color = feature.getProperty('color');
         }
-      });
-      layer.setMap(main_map); 
-      layer.addListener('click', function(e) {
-        mapZoom(e.latLng, main_map);
-      }); */
-      
-      main_map.data.loadGeoJson('https://raw.githubusercontent.com/qmmr/mongodb/master/zips.json');
-      main_map.data.setStyle({
-        fillColor: 'green',
-        strokeWeight: 1
+        return /** @type {google.maps.Data.StyleOptions} */({
+          fillColor: color,
+          strokeColor: color,
+          strokeWeight: 2
+        });
       });
 
-    /*    myLatlng = {lat: 64.0000, lng: -150.0000};
-        var alaska_map = new google.maps.Map(document.getElementById('alaska_map'), {
-          zoom: 2.4,
-          center: myLatlng
+      // When the user hovers, tempt them to click by outlining the letters.
+      // Call revertStyle() to remove all overrides. This will use the style rules
+      // defined in the function passed to setStyle()
+      main_map.data.addListener('mouseover', function(event) {
+
+          main_map.data.revertStyle();
+          main_map.data.overrideStyle(event.feature, {strokeWeight: 4});
+        });      
+ 
+        main_map.data.setStyle({
+          fillColor: 'green',
+          strokeWeight: 1
         });
 
-        myLatlng = {lat: 20.3114, lng: -157.7964};
-        var hawaii_map = new google.maps.Map(document.getElementById('hawaii_map'), {
-          zoom: 5,
-          center: myLatlng
-        }); */
-
-      /*  alaska_map.addListener('click', function(e) {
-        mapZoom(e.latLng, alaska_map);
-        });
-
-        hawaii_map.addListener('click', function(e) {
-        mapZoom(e.latLng, hawaii_map);
-        }); */
-
-      /*  var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title: 'Click to zoom'
-        });
-
-        map.addListener('center_changed', function() {
-          // 3 seconds after the center of the map has changed, pan back to the
-          // marker.
-          window.setTimeout(function() {
-            map.panTo(marker.getPosition());
-          }, 3000);
-        }); 
-
-        marker.addListener('click', function() {
-          map.setZoom(8);
-          map.setCenter(marker.getPosition());
-        }); */
       }
 
       function mapZoom(latLng, map) {
@@ -172,11 +248,6 @@
 
           map.setCenter(marker.getPosition());
           
-          /* if (map.getZoom() < 8) { map.setZoom(6); }
-          else if (map.getZoom() == 6) { map.setZoom(8); }
-          else if (map.getZoom() == 8) { map.setZoom(10); } 
-          else {} */
-
           // Sets a limit for how far you can zoom in.
           if (map.getZoom() < 10) { map.setZoom(map.getZoom() + 2); }
           
@@ -199,11 +270,10 @@
           center = map.getCenter();
 
           // Sets a limit for how far you can zoom in.
-          map.setZoom(10);
+          map.setZoom(8);
           
           marker.setMap(null);
 
-          // alert("Pre-Geocode");
           var geocoder = new google.maps.Geocoder();
           geocoder.geocode({'latLng': center}, function(results, status){
           
@@ -225,29 +295,153 @@
 
               if (zipCode) {
  
+                 glob_zip = zipCode;
                  // Tested on the data layer. Working!
-                 alert(zipCode);
+                 // alert(zipCode);
+                 document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
 
+                 if (num_zips_selected < 3){
+                 
+                   var modal = document.getElementById('zip_modal');
+                   modal.style.display = "inline-block";
+
+                 } 
+     
               }
 
             }
 
           });
 
-          
-
 
       }
 
-
+      // Reset the map to the original zoom level.
       function resetMap(){
 
         var myLatlng = {lat: 38, lng: -95};
 
         main_map.setCenter(myLatlng);
-        main_map.setZoom(4.9);
+        main_map.setZoom(4.1);
 
       }
+
+     function addtoList() {
+
+       if (num_zips_selected < 3){
+
+           var zip_valid = 1;
+      
+           // Check to ensure the zip code
+           // is not a duplicate.
+           for (i = 0; i < 3; i++){
+
+               if (zip_arr[i] == glob_zip) {
+
+                 zip_valid = 0;
+
+               }
+
+           }
+
+           if(zip_valid){
+
+             // Add the zip code to the array, and increment
+             // the number of zip codes there.
+             zip_arr[num_zips_selected] = glob_zip;           
+             num_zips_selected = num_zips_selected + 1;
+           
+             zip_list_html = "Zip Code Comparison List (3 max): <br> <br>";
+           
+             // Add the zip codes in the list to the html string.
+             for (i = 0; i < num_zips_selected; i++){
+
+               zip_list_html = zip_list_html + zip_arr[i] + "<br>"
+
+             }
+
+             document.getElementById('zip_list').innerHTML = zip_list_html;
+             
+
+           }
+
+       }
+
+       // This doesn't work just yet.
+       if (num_zips_selected > 1){
+
+         zip_list_html = document.getElementById('zip_list').innerHTML + "<br>" + "<br>" + "This button doesn't work yet.";
+         document.getElementById('compare').style.display = "inline-block";
+        
+       }  
+
+       hideModal();
+
+     } 
+
+
+
+     // Zoom the map based on the zip code entered.
+     function zipSearch(geocoder){
+
+       // Grab the zip code entered by the user.
+       var address = document.getElementById("userzip").value;
+
+       // Run the Google geocoding function.
+       // Converts the zip code entered to a lat and long.
+       geocoder.geocode({'address': address}, function(results, status) {
+
+         // If successful, make a call to zipZoom.
+         if (status === 'OK') {
+
+           zipZoom(results[0].geometry.location,main_map); 
+
+         } else {
+           alert('Geocode was not successful for the following reason: ' + status);
+         }
+       });
+
+     } 
+
+     // Closes the modal window.
+     function hideModal(){
+
+       document.getElementById('zip_modal').style.display = "none";
+       document.getElementById('clear_modal').style.display = "none";
+       document.getElementById('clear_modal_none').style.display = "none";
+
+     }
+
+     // Handles the display of the appropriate modal
+     // given the number of zip codes entered so far.
+     function clearModal(){
+
+       if (num_zips_selected == 0){ 
+
+         var modal = document.getElementById('clear_modal_none');
+         modal.style.display = "inline-block";
+
+       }
+
+       else{
+
+         var modal = document.getElementById('clear_modal');
+         modal.style.display = "inline-block";
+
+       }
+
+     }
+
+     // Clear out any data the user may have entered so far.
+     function clearAllZips(){
+
+         document.getElementById('current_zip').innerHTML = "";
+         document.getElementById('zip_list').innerHTML = "No zip codes selected.";
+         document.getElementById('compare').style.display = "none";
+         num_zips_selected = 0;
+         hideModal();
+
+     }
 
       </script>
       <script async defer
