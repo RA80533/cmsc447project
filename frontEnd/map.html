@@ -131,10 +131,12 @@
   <script>
   var main_map;
   var glob_zip;
+  var new_boundary;
   var zip_arr = [];
   var marker_index = 0;
   var num_zips_selected = 0;
   var zip_list_html = "No zip codes selected.";
+  var hex_colors = ['#339966','#00cc99','#33cccc','#0099cc','#669900','#999966','#006600','#6699ff','#ffcc00','#996633'];
   document.getElementById('compare').style.display = "none";
 
   function initMap() {
@@ -169,12 +171,57 @@
  
       // Add some data layers to play with.
       main_map.data.loadGeoJson('https://raw.githubusercontent.com/jatmdm/cmsc447project/master/frontEnd/us-states.json');
+   /*   main_map.data.setStyle({
+ 
+        fillColor: 'green'
 
-      main_map.data.addListener('click', function(e) {
+      }); */
 
-        zipZoom(e.latLng, main_map);
+      // Color each letter gray. Change the color when the isColorful property
+      // is set to true.
+      main_map.data.setStyle(function(feature) {
+          
+          var color = 'green';
+
+          if (feature.getProperty('isColorful')) {
+
+            color = feature.getProperty('color');
+
+          }
+
+          return /** @type {google.maps.Data.StyleOptions} */({
+
+            fillColor: 'green',
+            strokeColor: 'black',
+            strokeWeight: 1
+
+          });
 
       });
+
+      // When the user clicks, set 'isColorful', changing the color of the letters.
+      main_map.data.addListener('click', function(event) {
+
+        event.feature.setProperty('isColorful', true);
+        zipZoom(event.latLng, main_map);
+
+      });
+
+      // When the user hovers, tempt them to click by outlining the letters.
+      // Call revertStyle() to remove all overrides. This will use the style rules
+      // defined in the function passed to setStyle()
+      main_map.data.addListener('mouseover', function(event) {
+      
+        main_map.data.revertStyle();
+        main_map.data.overrideStyle(event.feature, {strokeWeight: 3});
+
+      });
+
+      main_map.data.addListener('mouseout', function(event) {
+
+          main_map.data.revertStyle();
+
+      }); 
 
   }
 
@@ -208,6 +255,14 @@
           
     map.setCenter(marker.getPosition());
     center = map.getCenter();
+
+    map.data.setMap(null);
+    map.data.loadGeoJson('https://raw.githubusercontent.com/jatmdm/cmsc447project/master/frontEnd/zips.json');
+    map.data.setStyle({
+ 
+        fillColor: 'green'
+
+    });
 
     // Sets a limit for how far you can zoom in.
     map.setZoom(8);          
@@ -311,6 +366,11 @@
     }  
 
     hideModal();
+    main_map.data.setStyle({
+ 
+        fillColor: 'green'
+
+    }); 
 
   } 
  
