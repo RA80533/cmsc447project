@@ -252,7 +252,7 @@ References: http://leafletjs.com/examples/choropleth/
      // Query the json data.
      $(document).ready(function () {
 
-       $.getJSON("https://github.com/jatmdm/cmsc447project/blob/master/frontEnd/us-country-zips.json", function(data) { addDataToMap(data, main_map); });   
+       $.getJSON("https://github.com/jatmdm/cmsc447project/tree/master/frontEnd/zips.php?zips=us-country-zips", function(data) { addDataToMap(data, main_map); });   
 
      });
     
@@ -467,7 +467,7 @@ References: http://leafletjs.com/examples/choropleth/
 
       }
 
-  } // END zipZoom(e)
+  }
 
   // Zoom the map back out.
   function resetMapZoom(){
@@ -476,26 +476,30 @@ References: http://leafletjs.com/examples/choropleth/
     addStateLayer();
     current_zoom = 4;
 
-  } // END resetMapZoom()
+  }
 
   // Check to see if the layers need a swap.
   function checkLayers(){
 
     var map_scale = main_map.getZoom();
+    current_zoom = map_scale;
 
     if(map_scale < 9){
 
-      addStateLayer();
+      main_map.removeLayer(zip_json);
+      addStateLayer();      
 
     }
 
     else if(map_scale >= 9){
 
+      main_map.removeLayer(state_json);
       addZipLayer();
+      
 
     }
 
-  } // END checkLayers()
+  }
 
   </script>
 
