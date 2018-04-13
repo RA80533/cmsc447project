@@ -1,3 +1,20 @@
+<!-- 
+
+File Name: map.html
+
+Description: This file contains code to display and make
+appropriate computations for team Purple Parrot's version
+of the Map Project for Professor Russ Cain's Spring 2018 
+CMSC447 course.
+
+References: 
+
+http://www.usnaviguide.com/zip.htm
+https://blog.vizuri.com/how-to-create-a-choropleth-map-with-geojson-and-google-maps
+https://www.data.gov/
+
+-->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -74,7 +91,20 @@
     }
     .modal-no{
     }
+    #zip-box {
+
+        background-color: white;
+        border: 1px solid black;
+        bottom: 30px;
+        height: 20px;
+        padding: 10px;
+        position: absolute;
+        left: 30px;
+    }
     </style>
+
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
   </head>
 
   <body>
@@ -118,13 +148,15 @@
 
     </div>
 
-    <div class="main_map" id="main_map"></div>
+    <div class="main_map" id="main_map"><div id="click_zip"></div></div>
+    
 
     <div class="zip_frame" id="zip_frame">
       <div class="current_zip" id="current_zip"></div><br>
       <div class="zip_list" id="zip_list"></div><br>
       <button type="button" id="compare">Compare Zip Codes</button>      
     </div>
+    
 
   </div>
 
@@ -137,129 +169,138 @@
   var marker_index = 0;
   var num_zips_selected = 0;
   var zip_list_html = "No zip codes selected.";
-  var hex_colors = ['#339966','#00cc99','#33cccc','#0099cc','#669900','#999966','#006600','#6699ff','#ffcc00','#996633'];
+  var zoom_recently_updated = 0;
+  var hex_colors = ['#f44295','#efce94','#07ba31','#c6abcc','#f9f193','#c47105','#006600','#777777'];
+  var current_color = 0;
   document.getElementById('compare').style.display = "none";
+  var zoom = 5;
+  var lat = 41.8375511;
+  var lon = -87.6818441;
+  var map = null;
+  var tskey = "b300a5e050" ;
 
   function initMap() {
 
-      main_map = null;
-      var myLatlng = {lat: 38, lng: -95};
- 
-      // Default list when 0 zip codes are in the list.
-      document.getElementById('zip_list').innerHTML = zip_list_html;
-      main_map = new google.maps.Map(document.getElementById('main_map'), {
+        // The zip code layer uses an ImageMapType for
+        // the 
+        imageMapType = new google.maps.ImageMapType({
 
-          zoom: 4.1,
-          center: myLatlng
+          getTileUrl: function(coord, zoom) {
 
-       });
+            if (zoom < 10 || zoom > 15) {
 
-      // Listen for mouse clicks, zoom there.
-      main_map.addListener('click', function(e) {
+              return null;
 
-          mapZoom(e.latLng, main_map);
-
-      });
-
-      // Listen for clicks on the zip search button.
-      var geocoder = new google.maps.Geocoder();
-
-      document.getElementById('submit').addEventListener('click', function() {
-
-          zipSearch(geocoder);
-
-      });
- 
-      // Add some data layers to play with.
-      main_map.data.loadGeoJson('https://raw.githubusercontent.com/jatmdm/cmsc447project/master/frontEnd/us-states.json');
-// "fill": "#7987ff"
-
-      
-     /* main_map.data.forEach(function(feature) {
-
-        if (feature.getGeometry().getType() == 'Polygon' || feature.getGeometry().getType() == 'MultiPolygon'){ 
-
-          var prop = feature.getProperty('color');
-          alert('Thing'); 
- 
-        }
-
-      }); 
-
-      // Testing this code.
-      var myLayer = new google.maps.Data();
-      myLayer.loadGeoJson(
-        'https://raw.githubusercontent.com/jatmdm/cmsc447project/master/frontEnd/us-states.json', {},
-
-        function(features) {
-
-          console.log("loadGeoJson callback " + features.length);
-
-          myLayer.forEach(function(feature) {
-
-            if (feature.getGeometry().getType() == 'Polygon' || feature.getGeometry().getType() == 'MultiPolygon'){ 
-
-              var prop = feature.getProperty('color');
-              alert(prop); 
- 
             }
 
-          });
+            if (zoom <= 13 ) {
 
-      });
+              var url = "https://storage.googleapis.com/zipmap/tiles/" + zoom + "/" + coord.x + "/" + coord.y + ".png" ;       
+              return url ;
+      
+            }
+      
+            var server = coord.x % 6 ;
+            var url = "http://ts" + server + ".usnaviguide.com/tileserver.pl?X=" + coord.x + "&Y=" + coord.y + "&Z=" + zoom + "&T=" + tskey + "&S=Z1001" ;
+            return url ;
 
-      myLayer.setMap(main_map); 
+         },
+         tileSize: new google.maps.Size(256, 256),
+         opacity:1,
+         name:'Zip Code'
 
+        });
+   
+        var mapOptions = {
 
-      main_map.data.setStyle({
+            minZoom: 4.5,
+            maxZoom: 16,
+            zoom: 4.5,
+            center: new google.maps.LatLng(37, -95),
+            mapTypeIds: google.maps.MapTypeId.ROADMAP
+
+        };
+        main_map = new google.maps.Map(document.getElementById('main_map'), mapOptions);
+        main_map.overlayMapTypes.push(imageMapType);
+
+        var state_json = new google.maps.Data();
+        state_json.loadGeoJson('https://swe.umbc.edu/~dcuocci1/cmsc447project/frontEnd/us-states.json');
+
+        state_json.setStyle(function(feature) {
  
-        fillColor: 'green'
+           return {
 
-      }); 
+             fillColor: stateColor(), 
+             fillOpacity: 0.8,
+             strokeColor: '#FFFFFF',
+             strokeWeight: 1,
+             zIndex: 1
 
-      // Color each letter gray. Change the color when the isColorful property
-      // is set to true.
-      main_map.data.setStyle(function(feature) {
+           };
+
+        });
+
+        // Color each feature (state) in state_json a
+        // different color.
+        function stateColor() {
+
+          var color = hex_colors[current_color % 8];
+          current_color += 1;
+          return color;
+
+        }
+
+        // Add the state json layer to the map.
+        state_json.setMap(main_map);
+
+
+        // When the user hovers, tempt them to click by outlining the letters.
+        // Call revertStyle() to remove all overrides. This will use the style rules
+        // defined in the function passed to setStyle()
+        state_json.addListener('mouseover', function(event) {
+
+          state_json.revertStyle();
+          state_json.overrideStyle(event.feature, {strokeWeight: 2, strokeColor: '#000000',zIndex: 2});
+
+        });
+
+        state_json.addListener('mouseout', function(event) {
+
+          state_json.revertStyle();
+
+        });
+
+        state_json.addListener('click', function(event) {
+
+          state_json.revertStyle();
+
+        });
+
+        state_json.addListener('click', function(event) {
+
+          zipZoom(event.latLng, main_map);
           
-          var color = 'green';
+        });
 
-          if (feature.getProperty('isColorful')) {
+        main_map.addListener('zoom_changed', function() {
+ 
+          if(main_map.getZoom() > 9){
 
-            feature.setProperty('color','blue');
+            // Add code to display text box with instruction to click a zip code.
+
+            state_json.setMap(null);
 
           }
 
-          return ({
+          else if(main_map.getZoom() < 10){
 
-            fillColor: 'green',
-            strokeColor: 'black',
-            strokeWeight: 1
+            // Add code to hide text box with instructions to click a zip code.
 
-          });
+            state_json.setMap(main_map);
 
-      }); 
+          }          
 
-      // When the user clicks, set 'isColorful', changing the color of the letters.
-      main_map.data.addListener('click', function(event) {
-
-        event.feature.setProperty('color', 'red');
-        zipZoom(event.latLng, main_map);
-
-      }); 
-
-      // Set the hover behaviour.
-      main_map.data.addListener('mouseover', function(event) {
-      
-        main_map.data.revertStyle();
-        main_map.data.overrideStyle(event.feature, {strokeWeight: 3});
-
-      });
-
-      main_map.data.addListener('mouseout', function(event) {
-
-          main_map.data.revertStyle();
-
-      }); */
+        });
 
   }
 
@@ -295,7 +336,7 @@
     center = map.getCenter();
 
     // Sets a limit for how far you can zoom in.
-    map.setZoom(8);          
+    map.setZoom(10);          
     marker.setMap(null);
 
     var geocoder = new google.maps.Geocoder();
@@ -342,9 +383,9 @@
   // Reset the map to the original zoom level.
   function resetMap(){
 
-    var myLatlng = {lat: 38, lng: -95};
+    var myLatlng = {lat: 37, lng: -95};
     main_map.setCenter(myLatlng);
-    main_map.setZoom(4.1);
+    main_map.setZoom(4.5);
     
 
   }
@@ -482,8 +523,6 @@
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlbhFBE6Pe-UpthT8KqrlXTIt91_9qgPc&callback=initMap">
   </script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-
   
   </body>
 </html>
