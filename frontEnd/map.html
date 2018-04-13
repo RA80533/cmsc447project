@@ -114,7 +114,7 @@ https://www.data.gov/
   <button type="button" onclick="clearModal()">Reset Zip Data</button>
   <div class="divider"></div>
   <input id="userzip" type="textbox" value="">
-  <input id="submit" type="button" value="Search for Zip Code">  
+  <input id="submit" type="button" value="Search for Zip Code" onclick="zipSearch()">  
 
   <div class="container">
 
@@ -206,7 +206,7 @@ https://www.data.gov/
 
          },
          tileSize: new google.maps.Size(256, 256),
-         opacity:1,
+         opacity:.5,
          name:'Zip Code'
 
         });
@@ -445,10 +445,11 @@ https://www.data.gov/
     }); 
 
   } 
- 
 
   // Zoom the map based on the zip code entered.
-  function zipSearch(geocoder){
+  function zipSearch(){
+
+    var geocoder = new google.maps.Geocoder;
 
     // Grab the zip code entered by the user.
     var address = document.getElementById("userzip").value;
@@ -460,7 +461,7 @@ https://www.data.gov/
       // If successful, make a call to zipZoom.
       if (status === 'OK') {
 
-        zipZoom(results[0].geometry.location,main_map);
+        zipZoom(results[0].geometry.location, main_map);
  
       }
  
