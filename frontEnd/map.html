@@ -19,11 +19,13 @@ https://www.data.gov/
 <html>
   <head>
     <title>CMSC447 Map Project</title>
-    <h1>
+    <!--<h1>
     <p style= "font-family:arial">Map Project CMSC447</p>
-    </h1><br>
+    </h1><br>-->
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <style>
       body {
         text-align: left;
@@ -108,12 +110,34 @@ https://www.data.gov/
   </head>
 
   <body>
-  
+  <nav class="navbar navbar-expand-sm bg-light navbar-dark sticky-top">
+    <ul class="nav-pills">
+      <a class="nav-link" href="#">ZipCompare</a>
+    </ul>
+    <!--TEMPORARY-->
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <ul class="nav-pills">
+      <a class="nav-link" href="#">Login</a>
+    </ul>
+  </nav>
+
+
+  <input id="userzip" class="form-control" type="textbox" value="">
   <button type="button" onclick="resetMap()">Reset Map Zoom</button>
   <div class="divider"></div>
   <button type="button" onclick="clearModal()">Reset Zip Data</button>
   <div class="divider"></div>
-  <input id="userzip" type="textbox" value="">
   <input id="submit" type="button" value="Search for Zip Code" onclick="zipSearch()">  
 
   <div class="container">
@@ -123,8 +147,8 @@ https://www.data.gov/
       <div class="modal-content">
         <p>Information about this zip code is displayed to the right of the map.<br>
            Would you like to add this zip code to a list, to compare it to other zip codes?</p><br>
-           <button type="button" onclick="addtoList()">Yes</button>
-           <button type="button" onclick="hideModal()">No</button>
+           <button type="button" class="btn btn-primary" onclick="addtoList()">Yes</button>
+           <button type="button" class="btn btn-danger" onclick="hideModal()">No</button>
       </div>
 
     </div>
