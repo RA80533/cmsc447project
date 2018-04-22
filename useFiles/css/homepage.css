@@ -1,0 +1,326 @@
+                            body {
+                            background-color: black;
+                        }
+                        
+                        .sortmeeting {
+                            display: inline-block;
+                        }
+                        
+                        .editinput {}
+                        
+                        .editpass {}
+                        
+                        .settingText {
+                            display: inline-block;
+                        }
+                        
+                        #options {
+                            float: right;
+                        }
+                        
+                        #week {
+                            text-align: center;
+                            width: 100%;
+                        }
+                        
+                        #chngepass {
+                            position: relative;
+                            left: 30%;
+                        }
+                        
+                        #chngepasstext {
+                            color: darkblue;
+                        }
+                        
+                        #create {
+                            background-color: whitesmoke;
+                            margin: 2%
+                        }
+                        
+                        #meetingInfo,
+                        #meeting {
+                            background-color: whitesmoke;
+                        }
+                        
+                        #shutdownBtn {
+                            float: right;
+                        }
+                        
+                        #allmeeting {
+                            background-color: whitesmoke;
+                            border-radius: 1%;
+                            padding-left: 2%;
+                            padding-right: 2%;
+                            padding-top: 1%;
+                        }
+                        
+                        #homepage {
+                            margin-left: 20%;
+                            margin-right: 20%;
+                            max-width: 60%;
+                            min-width: 800px;
+                            overflow-x: auto;
+                            border-radius: 1%;
+                            background-color: black;
+                        }
+                        
+                        .space {
+                            height: 200px;
+                        }
+                        
+                        a {
+                            color: black;
+                            text-decoration: none;
+                        }
+                        
+                        h1 {
+                            color: white;
+                        }
+                        
+                        h3 {
+                            text-align: center;
+                            font-size: 20px;
+                            font-weight: 1000;
+                        }
+                        
+                        h2 {
+                            text-align: center;
+                        }
+                        
+                        h4 {
+                            text-align: center;
+                            font-size: 15px;
+                        }
+                        
+                        header > h1 {
+                            display: inline-block;
+                        }
+                        
+                        header span {
+                            font-size: 20px;
+                        }
+                        
+                        .editInfo {
+                            float: right;
+                            cursor: pointer;
+                        }
+                        
+                        .editButton {
+                            float: right;
+                            cursor: pointer;
+                        }
+                        
+                        #deletestud {
+                            font-size: 20px;
+                        }
+                        
+                        #banner {
+                            background-color: red;
+                            font-size: 30px;
+                            text-align: center;
+                            color: white;
+                            height: 35px;
+                        }
+                        
+                        @media all and (max-width: 825px) {
+                            #homepage {
+                                margin-left: 0;
+                            }
+                        }
+                        
+                        .button-success,
+                        .button-error,
+                        .button-warning,
+                        .button-secondary {
+                            color: white;
+                            border-radius: 4px;
+                            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                        }
+                        
+                        .button-success {
+                            background: rgb(28, 184, 65);
+                            /* this is a green */
+                        }
+                        
+                        .button-error {
+                            background: rgb(202, 60, 60);
+                            /* this is a maroon */
+                        }
+                        
+                        .button-warning {
+                            background: rgb(223, 117, 20);
+                            /* this is an orange */
+                        }
+                        
+                        .button-secondary {
+                            background: rgb(66, 184, 221);
+                            /* this is a light blue */
+                        }
+                        /* @@@@@@ MODAL STUFF @@@@@@*/
+                        /* The Modal (background) */
+                        
+                        .modal {
+                            display: none;
+                            /* Hidden by default */
+                            position: fixed;
+                            /* Stay in place */
+                            z-index: 1;
+                            /* Sit on top */
+                            padding-top: 100px;
+                            /* Location of the box */
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            /* Full width */
+                            height: 100%;
+                            /* Full height */
+                            overflow: auto;
+                            /* Enable scroll if needed */
+                            background-color: rgb(0, 0, 0);
+                            /* Fallback color */
+                            background-color: rgba(0, 0, 0, 0.4);
+                            /* Black w/ opacity */
+                        }
+                        /* Modal Content */
+                        
+                        .modal-content {
+                            background-color: #fefefe;
+                            margin: auto;
+                            padding-top: 5px;
+                            padding-left: 20px;
+                            padding-right: 20px;
+                            padding-bottom: 20px;
+                            border: 1px solid #888;
+                            border-radius: 1%;
+                            width: 40%;
+                            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                            -webkit-animation-name: animatetop;
+                            -webkit-animation-duration: 1s;
+                            animation-name: animatetop;
+                            animation-duration: 0.5s
+                        }
+                        /* Add Animation */
+                        
+                        @-webkit-keyframes animatetop {
+                            from {
+                                top: -300px;
+                                opacity: 0
+                            }
+                            to {
+                                top: 0;
+                                opacity: 1
+                            }
+                        }
+                        
+                        @keyframes animatetop {
+                            from {
+                                top: -300px;
+                                opacity: 0
+                            }
+                            to {
+                                top: 0;
+                                opacity: 1
+                            }
+                        }
+                        /* @@@@@@@@@@*/
+                        
+                        .modalEdit {
+                            display: none;
+                            /* Hidden by default */
+                            position: fixed;
+                            /* Stay in place */
+                            z-index: 1;
+                            /* Sit on top */
+                            padding-top: 100px;
+                            /* Location of the box */
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            /* Full width */
+                            height: 100%;
+                            /* Full height */
+                            overflow: auto;
+                            /* Enable scroll if needed */
+                            background-color: rgb(0, 0, 0);
+                            /* Fallback color */
+                            background-color: rgba(0, 0, 0, 0.4);
+                            /* Black w/ opacity */
+                        }
+                        
+                        .modalEdit-content {
+                            background-color: #fefefe;
+                            margin: auto;
+                            padding: 20px;
+                            border: 1px solid #888;
+                            width: 40%;
+                        }
+                        /* The Close Button */
+                        
+                        .close {
+                            color: white;
+                        }
+                        
+                        #chngepasstext:hover,
+                        #chngepasstext:focus,
+                        .close:hover,
+                        .close:focus {
+                            color: #000;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                        
+                        #chngepasstext:hover,
+                        #chngepasstext:focus {
+                            text-decoration: underline;
+                            color: mediumblue;
+                            cursor: pointer;
+                        }
+                        /*VIEW ALL MODAL STUFF*/
+                        /* The Modal (background) */
+                        
+                        .modalViewAll {
+                            display: none;
+                            /* Hidden by default */
+                            position: fixed;
+                            /* Stay in place */
+                            z-index: 1;
+                            /* Sit on top */
+                            padding-top: 100px;
+                            /* Location of the box */
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            /* Full width */
+                            height: 100%;
+                            /* Full height */
+                            overflow: auto;
+                            /* Enable scroll if needed */
+                            background-color: rgb(0, 0, 0);
+                            /* Fallback color */
+                            background-color: rgba(0, 0, 0, 0.4);
+                            /* Black w/ opacity */
+                        }
+                        /* Modal Content */
+                        
+                        .modalViewAll-content {
+                            background-color: #fefefe;
+                            margin: auto;
+                            padding: 20px;
+                            border: 1px solid #888;
+                            width: 80%;
+                        }
+                        /* The Close Button */
+                        
+                        .closeViewAll {
+                            color: #aaaaaa;
+                            float: right;
+                            font-size: 28px;
+                            font-weight: bold;
+                        }
+                        
+                        .closeViewAll:hover,
+                        .closeViewAll:focus {
+                            color: #000;
+                            text-decoration: none;
+                            cursor: pointer;
+                            /* @@@ END MODAL STUFF @@@ */
