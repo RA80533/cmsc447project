@@ -18,15 +18,17 @@ https://www.data.gov/
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CMSC447 Map Project</title>
+     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Josefin Slab">
+     <title>CMSC447 Map Project</title>
     <h1>
-    <p style= "font-family:arial">Map Project CMSC447</p>
-    </h1><br>
+    <p style= "font-family:Josefin Slab">Welcome to ZipCompare</p>
+    </h1>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
       body {
         text-align: left;
+        background-color: #FBEEC1;
       }
       .container { 
           width: 100%;
@@ -37,29 +39,147 @@ https://www.data.gov/
       }
     
       .main_map{
+
         height: 70%;
         width: 48%;
         display: inline-block;
  
        }
-      .zip_list {
-        height: 35%;
-        width: 40%; 
+      .click_instruction{
+
+        height: 5%;
+        width: 47.6%;
+        position: relative;
         display: inline-block;
+        background-color: #659DBD;
+        border-style: groove;
+        border-color: #ff9933;
+
+      }
+     .click_instruction_text {
+      
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 24px;
+        color: #FFFFFF; 
+      
+      }
+      .zip_column{
+
+        height: 5%;
+        width: 14.8%;
+        position: relative;
+        display: inline-block;
+        background-color: #659DBD;
+        border-style: groove;
+        border-color: #ff9933;
+
+      }
+     .zip_column_text {
+      
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 24px;
+        color: #FFFFFF; 
+      
+      }
+
+      .zip_list {
+
+        height: 35%;
+        width: 90%; 
+        position: relative;
+        margin: auto;
+        margin-top: 5%;
+        margin-left: 3.8%;
+        display: inline-block;
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
         
       }
       .current_zip{
+
         height: 35%;
-        width: 40%; 
+        width: 90%; 
+        position: relative;
+        margin: auto;
+        margin-top: 10%;
+        margin-left: 3.8%;
         display: inline-block;
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
+
       }
+
+      .current_zip_text{
+
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 18px;
+        color: #FFFFFF; 
+
+      }
+
       .zip_frame{
         height: 70%;
-        width: 40%;
+        width: 15%;
         display: inline-block;
         position: relative;
         overflow: hidden;
+        background-color: #659DBD;
       }
+    .zip_button_list{
+
+        height: 10%;
+        width: 90%; 
+        position: relative;
+        margin: auto;
+        margin-left: 3.8%;
+        padding-top: 1%;
+        display: inline-block;
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
+
+    }
+    .zip_list_button{
+
+      border-radius: 12px;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      background-color: #FBEEC1;
+      border: 2px solid #659DBD;
+      color: #8D8741;
+      
+
+    }
+    .zip_list_button:hover {
+
+      background-color: #4CAF50; /* Green */
+      color: #FBEEC1;
+      background-color: #8D8741;
+
+    }
     .modal {
 
         display: none; /* Hidden by default */
@@ -91,6 +211,9 @@ https://www.data.gov/
     }
     .modal-no{
     }
+    .button{
+
+    }
     #zip-box {
 
         background-color: white;
@@ -109,13 +232,6 @@ https://www.data.gov/
 
   <body>
   
-  <button type="button" onclick="resetMap()">Reset Map Zoom</button>
-  <div class="divider"></div>
-  <button type="button" onclick="clearModal()">Reset Zip Data</button>
-  <div class="divider"></div>
-  <input id="userzip" type="textbox" value="">
-  <input id="submit" type="button" value="Search for Zip Code" onclick="zipSearch()">  
-
   <div class="container">
 
     <div id="zip_modal" class="modal">
@@ -132,7 +248,7 @@ https://www.data.gov/
     <div id="clear_modal" class="modal">
 
       <div class="modal-content">
-        <p>Clear all zip code data?</p><br>
+        <p>Are you sure you want to clear all zip code data?</p><br>
            <button type="button" onclick="clearAllZips()">Yes</button>
            <button type="button" onclick="hideModal()">No</button>
       </div>
@@ -148,13 +264,30 @@ https://www.data.gov/
 
     </div>
 
-    <div class="main_map" id="main_map"><div id="click_zip"></div></div>
-    
+    <div class="click_instruction">
+      <div class="click_instruction_text" id="click_state">Click on a State to Zoom In</div>
+    </div>
+
+    <div class="zip_column">
+      <div class="zip_column_text">Zip Code Information</div>
+    </div>
+
+    <div class="main_map" id="main_map"></div>    
 
     <div class="zip_frame" id="zip_frame">
-      <div class="current_zip" id="current_zip"></div><br>
-      <div class="zip_list" id="zip_list"></div><br>
-      <button type="button" id="compare">Compare Zip Codes</button>      
+      <div class="current_zip" id="current_zip">
+        <div class="current_zip_text" id="current_zip_sel">--No zip currently selected.--</div>
+      </div><br>
+      <div class="zip_list" id="zip_list">
+        <div class="current_zip_text" id="current_zip_list">--Zip list empty.--</div>
+      </div><br><br><br>
+
+      <div class="zip_button_list">
+        <input id="userzip" type="textbox" value="" style="margin-left: 9%;">
+        <input id="submit" type="button" value="Zip Search" onclick="zipSearch()"><br><br> 
+        <button type="button" onclick="resetMap()" style="margin-left: 9%;">Reset Map Zoom</button>
+        <button type="button" onclick="clearModal()" style="margin-left: 9%;">Reset Zip Data</button> 
+      </div>    
     </div>
     
 
@@ -172,7 +305,6 @@ https://www.data.gov/
   var zoom_recently_updated = 0;
   var hex_colors = ['#f44295','#efce94','#07ba31','#c6abcc','#f9f193','#c47105','#006600','#777777'];
   var current_color = 0;
-  document.getElementById('compare').style.display = "none";
   var zoom = 5;
   var lat = 41.8375511;
   var lon = -87.6818441;
@@ -213,7 +345,7 @@ https://www.data.gov/
    
         var mapOptions = {
 
-            minZoom: 4.5,
+            minZoom: 4,
             maxZoom: 16,
             zoom: 4.5,
             center: new google.maps.LatLng(37, -95),
@@ -223,8 +355,14 @@ https://www.data.gov/
         main_map = new google.maps.Map(document.getElementById('main_map'), mapOptions);
         main_map.overlayMapTypes.push(imageMapType);
 
+        main_map.addListener('click', function(event) {
+
+          getZipInfo(event.latLng, main_map);
+
+        });
+
         var state_json = new google.maps.Data();
-        state_json.loadGeoJson('https://swe.umbc.edu/~dcuocci1/cmsc447project/frontEnd/us-states.json');
+        state_json.loadGeoJson('us-states.json');
 
         state_json.setStyle(function(feature) {
  
@@ -279,26 +417,26 @@ https://www.data.gov/
         state_json.addListener('click', function(event) {
 
           zipZoom(event.latLng, main_map);
-          
+
         });
 
         main_map.addListener('zoom_changed', function() {
  
           if(main_map.getZoom() > 9){
 
-            // Add code to display text box with instruction to click a zip code.
+            document.getElementById('click_state').innerHTML = "Click on a Zip Code for more Information";
 
-            state_json.setMap(null);
+            if (state_json.getMap() != null){ state_json.setMap(null); }
+            main_map.setOptions({draggableCursor:'pointer'});
 
           }
 
           else if(main_map.getZoom() < 10){
 
-            // Add code to hide text box with instructions to click a zip code.
-
-            state_json.setMap(main_map);
-
-          }          
+            document.getElementById('click_state').innerHTML = "Click on a State to Zoom In";
+            
+            if (state_json.getMap() != main_map){ state_json.setMap(main_map); }
+            main_map.setOptions({draggableCursor:''});          }          
 
         });
 
@@ -335,9 +473,17 @@ https://www.data.gov/
     map.setCenter(marker.getPosition());
     center = map.getCenter();
 
-    // Sets a limit for how far you can zoom in.
-    map.setZoom(10);          
+    // Zooms in to display zips.
+    map.setZoom(11.8);          
     marker.setMap(null);
+
+  }
+
+  // Computes the zip code based on the lat and lng
+  // received from the click event.
+  function getZipInfo(latLng, map){
+
+    var center = map.getCenter();
 
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'latLng': center}, function(results, status){
@@ -363,14 +509,36 @@ https://www.data.gov/
 
       if (zipCode) {
  
-        glob_zip = zipCode;
+        glob_zip = zipCode;  
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
+        // document.getElementById('current_zip_sel').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
+         
+        // Zip not in the array.
+        if(zipCheck() && num_zips_selected <= 3){
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;">Add to Zip Comparison List</button></div>';
+
+        
+        }
+
+        // Zip already in the array.
+        else if(!zipCheck() && num_zips_selected <= 3){ 
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
+
+        }
+
+        // Just display the zip data.
+        else{
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
+
+        }
 
         if (num_zips_selected < 3){
                  
-          var modal = document.getElementById('zip_modal');
-          modal.style.display = "inline-block";
+         // var modal = document.getElementById('zip_modal');
+         // modal.style.display = "inline-block";
 
         } 
      
@@ -378,7 +546,41 @@ https://www.data.gov/
 
     }); 
 
-  } 
+  }
+
+  // Used to display the zip data when a 
+  // zip button is clicked on the zip list.
+  function zipButtonDisplay(zipCode){
+
+    if (zipCode) {
+
+      glob_zip = zipCode;
+
+        // Zip not in the array.
+        if(zipCheck() && num_zips_selected <= 3){
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;">Add to Zip Comparison List</button></div>';
+
+        
+        }
+
+        // Zip already in the array.
+        else if(!zipCheck() && num_zips_selected <= 3){ 
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
+
+        }
+
+        // Just display the zip data.
+        else{
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
+
+        }
+   
+    }
+
+  }
  
   // Reset the map to the original zoom level.
   function resetMap(){
@@ -386,26 +588,15 @@ https://www.data.gov/
     var myLatlng = {lat: 37, lng: -95};
     main_map.setCenter(myLatlng);
     main_map.setZoom(4.5);
-    
+    document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">--No zip currently selected.--</div>';    
 
   }
 
-  function addtoList() {
+  function addToList() {
 
     if (num_zips_selected < 3){
 
-        var zip_valid = 1;
-      
-        // Check to ensure the zip code
-        // is not a duplicate.
-        for (var i = 0; i < 3; i++){
-
-            if (zip_arr[i] == glob_zip) {
-
-              zip_valid = 0;
-
-            }
-        }
+        var zip_valid = zipCheck();
 
         if(zip_valid){
 
@@ -413,69 +604,201 @@ https://www.data.gov/
           // the number of zip codes there.
           zip_arr[num_zips_selected] = glob_zip;           
           num_zips_selected = num_zips_selected + 1;
-           
-          zip_list_html = "Zip Code Comparison List (3 max): <br> <br>";
-         
-          // Add the zip codes in the list to the html string.
-          for (i = 0; i < num_zips_selected; i++){
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + glob_zip + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
 
-            zip_list_html = zip_list_html + zip_arr[i] + "<br>";
+          setZipList();
 
-          }
-
-          document.getElementById('zip_list').innerHTML = zip_list_html;
-             
-        }
+       }
 
     }
 
-    // This doesn't work just yet.
-    if (num_zips_selected > 1){
+  }
 
-      zip_list_html = document.getElementById('zip_list').innerHTML + "<br>" + "<br>" + "This button doesn't work yet.";
-      document.getElementById('compare').style.display = "inline-block";
-        
-    }  
+  function removeFromList() {
 
-    hideModal();
-    main_map.data.setStyle({
- 
-        fillColor: 'green'
+    // Iterate through zip array, and
+    // pull out those  that must be kept.
+    var temp_list = [];
+    var j = 0;
+    if (num_zips_selected > 0){
 
-    }); 
+      for (var i = 0; i < 3; i++){
 
-  } 
+        if (zip_arr[i] != glob_zip){
+
+          temp_list[j] = zip_arr[i];
+          j += 1;
+
+        }
+
+      }
+
+    }
+
+    // Reset the zip list div.
+    num_zips_selected -= 1;
+    zip_arr = temp_list;
+    setZipList();
+
+  }
+
+  // Appropriately sets the zip list div based on the number of
+  // elements currently in the array.
+  function setZipList(){
+
+    // Add just one button. Also adds listener to
+    // Re-display the data in the currently selected zip div
+    // when clicked.
+
+    if(num_zips_selected == 0){
+
+      document.getElementById('zip_list').innerHTML = '<div class="current_zip_text" id="current_zip_list">--Zip list empty.--</div>';
+
+
+    }
+
+    else if(num_zips_selected == 1){
+
+      document.getElementById('zip_list').innerHTML = '<div class="current_zip_text" id="zip_list_1"><button type="button" id="zip1" class="zip_list_button"></button></div>';
+      document.getElementById('zip1').value = zip_arr[num_zips_selected - 1];
+      document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 1];
+      document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 1])");
+
+    }
+
+    // Add two buttons.
+    else if(num_zips_selected == 2){
+
+      document.getElementById('zip_list').innerHTML = '<div class="current_zip_text" id="zip_list_1"><button type="button" id="zip1" style="margin-left: 30%;" class="zip_list_button"></button><br><button type="button" id="zip2" style="margin-left: 30%;" class="zip_list_button"></button><br><br><br><button type="button" id="zip_comp" class="zip_list_button">Perform Comparison</button></div>';
+      document.getElementById('zip1').value = zip_arr[num_zips_selected - 2];
+      document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 2];
+      document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 2])");
+
+      document.getElementById('zip2').value = zip_arr[num_zips_selected - 1];
+      document.getElementById('zip2').innerHTML = zip_arr[num_zips_selected - 1];
+      document.getElementById('zip2').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 1])");
+      document.getElementById('zip_comp').setAttribute("onclick", "javascript:  zipCompare()");
+
+    }
+
+    // Add three buttons.
+    else if(num_zips_selected == 3){
+
+      document.getElementById('zip_list').innerHTML = '<div class="current_zip_text" id="zip_list_1"><button type="button" id="zip1" style="margin-left: 30%;" class="zip_list_button"></button><br><button type="button" id="zip2" style="margin-left: 30%;" class="zip_list_button"></button><br><button type="button" id="zip3" style="margin-left: 30%;" class="zip_list_button"></button><br><br><button type="button" id="zip_comp" class="zip_list_button">Perform Comparison</button></div>';
+      document.getElementById('zip1').value = zip_arr[num_zips_selected - 3];
+      document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 3];
+      document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 3])");
+
+      document.getElementById('zip2').value = zip_arr[num_zips_selected - 2];
+      document.getElementById('zip2').innerHTML = zip_arr[num_zips_selected - 2];
+      document.getElementById('zip2').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 2])");
+
+      document.getElementById('zip3').value = zip_arr[num_zips_selected - 1];
+      document.getElementById('zip3').innerHTML = zip_arr[num_zips_selected - 1];
+      document.getElementById('zip3').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 1])");
+      document.getElementById('zip_comp').setAttribute("onclick", "javascript:  zipCompare()");
+
+    }
+
+  }
 
   // Zoom the map based on the zip code entered.
   function zipSearch(){
 
-    var geocoder = new google.maps.Geocoder;
-
     // Grab the zip code entered by the user.
     var address = document.getElementById("userzip").value;
 
-    // Run the Google geocoding function.
-    // Converts the zip code entered to a lat and long.
-    geocoder.geocode({'address': address}, function(results, status) {
-
-      // If successful, make a call to zipZoom.
-      if (status === 'OK') {
+    // Attempt to geocode using the user's entered zip code.
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': address}, function(results, status){
+          
+      // Ensure the status is good.
+      if (status == google.maps.GeocoderStatus.OK) {
 
         zipZoom(results[0].geometry.location, main_map);
- 
+
+        // Iterate through the results array to find the zip code.
+        var addressComponent = results[0].address_components;            
+        for (var x = 0 ; x < addressComponent.length; x++) {
+
+          var chk = addressComponent[x];
+
+          if (chk.types[0] == 'postal_code') {
+
+            zipCode = chk.long_name;
+
+          }
+
+        }
+
       }
+
+      else{ alert("We couldn't find your zip code."); }
+
+      if (zipCode) {
  
-      else {
+        glob_zip = zipCode;  
 
-        alert('Geocode was not successful for the following reason: ' + status);
+        // document.getElementById('current_zip_sel').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
+         
+        // Zip not in the array.
+        if(zipCheck() && num_zips_selected < 3){
 
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;">Add to Zip Comparison List</button></div>';
+
+        
+        }
+
+        // Zip already in the array.
+        else if(!zipCheck() && num_zips_selected < 3){ 
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
+
+        }
+
+        // Just display the zip data.
+        else{
+
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE";
+
+        }
+
+        if (num_zips_selected < 3){
+                 
+         // var modal = document.getElementById('zip_modal');
+         // modal.style.display = "inline-block";
+
+        } 
+     
       }
 
-    });
+    }); 
+
 
   } 
 
+  // Returns 0 if the zip code is in the array.
+  // Returns 1 if the zip code is not in the array. 
+  function zipCheck(){
 
+    var zip_valid = 1;
+      
+    // Check to ensure the zip code
+    // is not a duplicate.
+    for (var i = 0; i < 3; i++){
+
+      if (zip_arr[i] == glob_zip) {
+
+        zip_valid = 0;
+        return 0;
+
+      }
+
+    }
+
+    return 1;
+
+  }
 
   // Closes the modal window.
   function hideModal(){
@@ -492,28 +815,20 @@ https://www.data.gov/
 
     var modal;
 
-    if (num_zips_selected === 0){ 
+    modal = document.getElementById('clear_modal');
+    modal.style.display = "inline-block";
 
-      modal = document.getElementById('clear_modal_none');
-      modal.style.display = "inline-block";
 
-    }
-
-    else {
-
-      modal = document.getElementById('clear_modal');
-      modal.style.display = "inline-block";
-
-    }
 
   }
 
   // Clear out any data the user may have entered so far.
   function clearAllZips(){
 
-      document.getElementById('current_zip').innerHTML = "";
-      document.getElementById('zip_list').innerHTML = "No zip codes selected.";
-      document.getElementById('compare').style.display = "none";
+      document.getElementById('current_zip_sel').innerHTML = "--No zip currently selected.--";
+      document.getElementById('zip_list').innerHTML = '<div class="current_zip_text" id="current_zip_list">--Zip list empty.--</div>';
+      //document.getElementById('current_zip_list').innerHTML = "--Zip list empty.--";
+      document.getElementById("userzip").value = "";
       num_zips_selected = 0;
 
       hideModal();
