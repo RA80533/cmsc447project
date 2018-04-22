@@ -1,140 +1,282 @@
-* {
-    font-family: "Roboto", sans-serif;
-    padding: 0px;
-    margin: 0px;
-}
+      body {
+        text-align: left;
+        background-color: #FBEEC1;
+      }
+      .container { 
 
-.container {    
-    padding: 10px;
-    max-width: 650px;
-    margin: 0 auto;    
-}
+          width: 100%;
+          height: 1000px;
+          overflow: auto;
+          display: none;
+          position: relative;
 
-.messages {
-    width: 100%;
-    display: inline-block;
-    margin: 15px;
-    padding: 30px;
-    color: #1a9944;
-    border-radius: 5px;
-    padding-left: 70px;
-    background: #baffba url("https://freeiconshop.com/files/edd/checkmark-flat.png") no-repeat;
-    background-size: 35px 35px;
-    background-position: 2% 50%;
-}
+      }
+    
+      .main_map{
 
-.close {
-    float: right;
-    font-size: 20px;
-    cursor: pointer;
-}
+        height: 70%;
+        width: 48%;
+        display: inline-block;
+ 
+       }
 
-.close:hover {
-    color: #4386d3;
-    transform: rotate(90deg);
-    transition: 0.5s ease-in-out;
-}
+      .favorites_panel{
 
-.field {    
-    width: 400px;
-    padding: 5px;
-    margin: 5px;
-}
+        height: 70%;
+        width: 47.7%;
+        display: inline-block;
+        background-color: #659DBD;
+        border-style: groove;
+        border-color: #ff9933;
+ 
+       }
 
-.create, .meeting {
-    margin: 10px;
-    width: 100%;
-    height: 100%;
-    border: none;
-    cursor: pointer;
-}
+       .favorites_text{
 
-.create:hover, .meeting:hover {
-    transform: scale(1.1, 1.1);
-    transition: 0.2s ease-in-out;
+        margin: 0;
+        position: absolute;
+        top: 45%;
+        left: 23%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 18px;
+        color: #FFFFFF; 
 
-}
+       }
 
-.create:hover { 
-    color: white;
-    background-color: #999999;
-    box-shadow: 2 2 0.2 1 black;
-}
+      .click_instruction{
 
-.meeting:hover { 
-    background-color: #b2652e
-}
+        height: 5%;
+        width: 47.7%;
+        position: relative;
+        display: inline-block;
+        background-color: #659DBD;
+        border-style: groove;
+        border-color: #ff9933;
 
-form.create-form {
-    display: inline-block;
-    width: 100px;
-    margin: 0;
-}
+      }
 
-.create-btn {
-    display: inline-block;
-    width: 100px;
-    cursor: pointer;
-}
+     .click_instruction_text {
+      
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 24px;
+        color: #FFFFFF; 
+      
+      }
 
-.del-btn {
-    background-color: #4386d3;
-    border: none;
-    width: 100%;
-    cursor: pointer;
-}
+      .zip_column{
 
-.cnfm-btn {
-    background-color: #4386d3;
-    border: none;
-    width: 100%;
-    margin-left: 15px;
-}
+        height: 5%;
+        width: 14.8%;
+        position: relative;
+        display: inline-block;
+        background-color: #659DBD;
+        border-style: groove;
+        border-color: #ff9933;
 
-.create-btn, .del-btn {    
-    margin: 5px;
-    height: 30px;
-    border: none;
-    padding-bottom: 0px;
-    background-color: #4386d3;
-    color: white;
-}
+      }
 
-.meeting {        
-    color: white;
-    background-color: #E88640;    
-}
+     .zip_column_text {
+      
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 24px;
+        color: #FFFFFF; 
+      
+      }
+
+      .zip_list {
+
+        height: 35%;
+        width: 90%; 
+        position: relative;
+        margin: auto;
+        margin-top: 5%;
+        margin-left: 3.8%;
+        display: inline-block;
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
+        
+      }
+      .current_zip{
+
+        height: 35%;
+        width: 90%; 
+        position: relative;
+        margin: auto;
+        margin-top: 10%;
+        margin-left: 3.8%;
+        display: inline-block;
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
+
+      }
+
+      .current_zip_text{
+
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 18px;
+        color: #FFFFFF; 
+
+      }
+
+      .zip_frame{
+
+        height: 70%;
+        width: 15%;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        background-color: #659DBD;
+        border-style: groove;
+        border-color: #ff9933; 
+
+      }
+    .zip_button_list{
+
+        height: 10%;
+        width: 90%; 
+        position: relative;
+        margin: auto;
+        margin-left: 3.8%;
+        padding-top: 1%;
+        display: inline-block;
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
+
+    }
+    .zip_list_button{
+
+      border-radius: 12px;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      background-color: #FBEEC1;
+      border: 2px solid #659DBD;
+      color: #8D8741;
+      height: 24px;
+      
+
+    }
+    .zip_list_button:hover {
+
+      background-color: #4CAF50; /* Green */
+      color: #FBEEC1;
+      background-color: #8D8741;
+
+    }
+    .modal {
+
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 137px; /* Location of the box */
+        left: 15%;
+        top: 30%;
+        width: 20%; /* Full width */
+        height: 20%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: #BC986A;
+        border-style: groove;
+        border-color: #ff9933; 
+        color: #FBEEC1;
+
+    }
+    .modal-content {
+    
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Josefin Slab';
+        font-size: 18px;
+        color: #FFFFFF; 
+
+    }
+    #zip-box {
+
+        background-color: white;
+        border: 1px solid black;
+        bottom: 30px;
+        height: 20px;
+        padding: 10px;
+        position: absolute;
+        left: 30px;
+    }
+
+    /* Style the tab */
+    .zip_tab_group {
+
+      overflow: hidden;
+      width: 14.255%;
+      margin-left: 33.45%;
+      background-color: #659DBD;
+      border-left: 3px groove #ff9933;
+      border-right: 3px groove #ff9933;
+      border-top: 3px groove #ff9933;
+
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .zip_tab {
+
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-family: 'Josefin Slab';
+        font-size: 14px;
+        color: #FFFFFF; 
+
+    }
+
+    /* Change background color of buttons on hover */
+    .zip_tab:hover {
+        background-color: #DAAD86;
+    }
+
+    /* Create an active/current tablink class */
+    .zip_tab.active {
+        background-color: #BC986A;
+    }
 
 
-.arrow {
-    color: black;
-    text-decoration: none;
-    font-size: 200%;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;    
-}
+    /* Change background color of buttons on hover */
+    .logout_btn:hover {
+        background-color: #DAAD86;
+    }
 
-.arrow:hover {
-    color: #4386d3;
-    transform: scale(1.1, 1.1);
-    transition: 0.2s;
-}
+    /* Create an active/current tablink class */
+    .logout_btn.active {
 
-#results, #students {
-    margin-top: 80px;
-    padding: 10px;
-    margin-left: 30px;
-    background-color: #eee;
-    display: inline-block;    
-    min-width: 234px;    
-}
+        background-color: #BC986A;
 
-#students {
-    margin-top: 40px;    
-}
-
-#students:empty, #results:empty {
-  display:none;
-}
-
+    }
