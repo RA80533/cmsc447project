@@ -284,9 +284,9 @@ https://www.data.gov/
 
       <div class="zip_button_list">
         <input id="userzip" type="textbox" value="" style="margin-left: 9%;">
-        <input id="submit" type="button" value="Zip Search" onclick="zipSearch()"><br><br> 
-        <button type="button" onclick="resetMap()" style="margin-left: 9%;">Reset Map Zoom</button>
-        <button type="button" onclick="clearModal()" style="margin-left: 9%;">Reset Zip Data</button> 
+        <input id="submit" type="button" value="Zip Search" onclick="zipSearch()" class="zip_list_button"><br><br> 
+        <button type="button" onclick="resetMap()" style="margin-left: 9%;" class="zip_list_button">Reset Map Zoom</button>
+        <button type="button" onclick="clearModal()" style="margin-left: 9%;" class="zip_list_button">Reset Zip Data</button> 
       </div>    
     </div>
     
@@ -516,7 +516,7 @@ https://www.data.gov/
         // Zip not in the array.
         if(zipCheck() && num_zips_selected <= 3){
 
-          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;">Add to Zip Comparison List</button></div>';
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;" class="zip_list_button">Add to Zip Comparison List</button></div>';
 
         
         }
@@ -524,7 +524,7 @@ https://www.data.gov/
         // Zip already in the array.
         else if(!zipCheck() && num_zips_selected <= 3){ 
 
-          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;" class="zip_list_button">Remove from Zip Comparison List</button></div>';
 
         }
 
@@ -559,7 +559,7 @@ https://www.data.gov/
         // Zip not in the array.
         if(zipCheck() && num_zips_selected <= 3){
 
-          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;">Add to Zip Comparison List</button></div>';
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;" class="zip_list_button">Add to Zip Comparison List</button></div>';
 
         
         }
@@ -567,7 +567,7 @@ https://www.data.gov/
         // Zip already in the array.
         else if(!zipCheck() && num_zips_selected <= 3){ 
 
-          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;" class="zip_list_button">Remove from Zip Comparison List</button></div>';
 
         }
 
@@ -604,7 +604,7 @@ https://www.data.gov/
           // the number of zip codes there.
           zip_arr[num_zips_selected] = glob_zip;           
           num_zips_selected = num_zips_selected + 1;
-          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + glob_zip + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;">Remove from Zip Comparison List</button></div>';
+          document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + glob_zip + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="removeFromList()" style="margin-left: 10%;" class="zip_list_button">Remove from Zip Comparison List</button></div>';
 
           setZipList();
 
