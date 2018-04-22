@@ -640,6 +640,11 @@ https://www.data.gov/
     zip_arr = temp_list;
     setZipList();
 
+    // Since we just removed a zip code, we know that
+    // the currently selected zip div can be updated to
+    // offer to re-add the one which was removed.
+    document.getElementById('current_zip').innerHTML = '<div class="current_zip_text" id="current_zip_sel">' + "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button id="curr_zip" name="btn" onclick="addToList()" style="margin-left: 16.5%;" class="zip_list_button">Add to Zip Comparison List</button></div>';
+
   }
 
   // Appropriately sets the zip list div based on the number of
