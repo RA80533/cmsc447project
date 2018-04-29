@@ -9,9 +9,8 @@ if ($_POST) {
     $fName = $_POST["fName"];
     $lName = $_POST["lName"];
     $email = $_POST["email"];
-    $bldgName = $_POST["bldgName"];
-    $officeRm = $_POST["officeRm"];
 	$password = $_POST["password"];
+	$zipcode = $_POST["zipcode"];
 	
 	// A higher "cost" is more secure but consumes more processing power
 	$cost = 10;
@@ -35,10 +34,10 @@ if ($_POST) {
     if (mysqli_num_rows($results) == 0) {
 		$insert_advisor = "
 			INSERT INTO Advisor (
-				email, password, firstName, lastName, buildingName, roomNumber
+				email, password, firstName, lastName, zipcode
 			)
 			VALUES (
-				'$email', '$password', '$fName', '$lName', '$bldgName', '$officeRm'
+				'$email', '$password', '$fName', '$lName', '$zipcode'
 			)
 			";
 		$open_connection->query($insert_advisor);

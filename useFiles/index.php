@@ -7,7 +7,7 @@
 	// Checks to see if the user is logged in, if so it redirects them to homepage
 	if (isset($_SESSION["HAS_LOGGED_IN"])) {
 		if ($_SESSION["HAS_LOGGED_IN"]) {
-			header('Location: homepage.php');
+			header('Location: map.html');
 		}
 	}
 ?>
