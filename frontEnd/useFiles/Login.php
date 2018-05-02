@@ -7,7 +7,18 @@ ini_set('session.gc_maxlifetime', 3600);
 session_set_cookie_params(3600);
 session_start();
 
-include '../utils/dbconfig.php';
+// Connect to the SQLite database
+
+$db = new PDO("sqlite:../db/447db.sqlite") or die("CAN'T OPEN THE DATABASE");
+
+
+$query = "SELECT * FROM accounts WHERE 1";
+foreach ($dbh->query($query) as $row){
+	echo $row[0];
+}
+
+$db = null;
+
 
 // Checks to see if the user is logged in, if so it redirects them to homepage
 if (isset($_SESSION["HAS_LOGGED_IN"])) {
