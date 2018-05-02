@@ -241,7 +241,7 @@ function initMap() {
 
     getTileUrl: function(coord, zoom) {
 
-      if (zoom < 4 || zoom > 12) {
+      if (zoom < 4 || zoom > 13) {
 
         return null;
 
@@ -268,7 +268,7 @@ function initMap() {
   var mapOptions = {
 
       minZoom: 4,
-      maxZoom: 12,
+      maxZoom: 13,
       zoom: 4,
       center: new google.maps.LatLng(37, -95),
       mapTypeIds: google.maps.MapTypeId.ROADMAP
@@ -367,6 +367,35 @@ function initMap() {
 
   });
 
+  /*test_json = new google.maps.Data();
+  test_json.loadGeoJson('test.json');
+  test_json.setStyle(function(feature) {
+
+    // Get the color that was already set.
+    for(var i = 0; i < state_color_arr.length; i++){
+       
+      // alert(state_color_arr[i].state_name + " " + feature.getProperty('name'));
+      if(state_color_arr[i].state_name == feature.getProperty('name')){
+
+         var new_color = state_color_arr[i].state_color;
+         // alert(new_color);
+         return {
+
+          fillColor: new_color, 
+          fillOpacity: 0.8,
+          strokeColor: '#000000',
+          strokeWeight: 1,
+          zIndex: 1
+
+        };
+
+      }
+
+    }
+ 
+  });
+  test_json.setMap(main_map);*/
+
   state_json.addListener('mouseout', function(event) {
 
     state_json.revertStyle();
@@ -381,7 +410,7 @@ function initMap() {
 
   state_json.addListener('click', function(event) {
 
-    if(main_map.getZoom() < 10){
+    if(main_map.getZoom() <= 10){ 
 
       zipZoom(event.latLng, main_map);
 
@@ -426,7 +455,7 @@ function setStateColors(){
 
 function zipZoom(latLng, map) {
 
-  var center, zipcode;
+  var center;
   var new_zoom = main_map.getZoom();
   new_zoom += 2;
   var marker = new google.maps.Marker({
@@ -442,6 +471,27 @@ function zipZoom(latLng, map) {
   // Zooms in to display zips.
   map.setZoom(new_zoom);          
   marker.setMap(null);
+
+}
+
+function zipZoomCloser(latLng, map){
+
+    var center;
+    var new_zoom = 13;
+    var latLng = latLng;
+    var marker = new google.maps.Marker({
+
+      position: latLng,
+      map: map
+
+    }); 
+          
+    map.setCenter(marker.getPosition());
+    center = map.getCenter();
+
+    // Zooms in to display zips.
+    map.setZoom(new_zoom);          
+    marker.setMap(null);
 
 }
 
@@ -522,7 +572,7 @@ function zipButtonDisplay(zipCode){
         // Ensure the status is good.
         if (status == google.maps.GeocoderStatus.OK) {
 
-          zipZoom(results[0].geometry.location, main_map);
+          zipZoomCloser(results[0].geometry.location, main_map);
 
         }
 
@@ -567,6 +617,7 @@ function addToList() {
 
   if (num_zips_selected < 3){
 
+      // Returns 1 if the zip is not in the array.
       var zip_valid = zipCheck();
 
       if(zip_valid){
@@ -576,7 +627,7 @@ function addToList() {
         zip_arr[num_zips_selected] = glob_zip;           
         num_zips_selected = num_zips_selected + 1;
         document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container w3-padding-small"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove from Comparison</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
-       setZipList();
+        setZipList();
 
      }
 
@@ -690,7 +741,7 @@ function zipSearch(){
     // Ensure the status is good.
     if (status == google.maps.GeocoderStatus.OK) {
 
-      zipZoom(results[0].geometry.location, main_map);
+      zipZoomCloser(results[0].geometry.location, main_map);
 
       // Iterate through the results array to find the zip code.
       var addressComponent = results[0].address_components;            
