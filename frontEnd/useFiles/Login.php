@@ -28,20 +28,16 @@ if (isset($_SESSION["HAS_LOGGED_IN"])) {
 }
 
 if ($_POST) {
-    $email = strtolower($_POST["email"]);
+    $username = strtolower($_POST["username"]);
 	$password = md5($_POST["password"]); //replace md5 with name of server
 
-    $open_connection = connectToDB();
-
     // Search if user email exists in DB
-    $search_advisor = "SELECT * FROM Advisor WHERE email = '$email' AND password = '$password'";
+    $search_account = "SELECT * FROM accounts WHERE userName = '$username' AND password = '$password'";
 
-    $queryOfSearchAdvisor = $open_connection->query($search_advisor);
-
-    $num_rows = mysqli_num_rows($queryOfSearchAdvisor);
+	$row = $db->query($search_account);
 	
     // Check whether or not there has been a successful user creation
-    if ($num_rows == 1) {
+    if ($row) {
         session_start();
 		
         // Translate the SQL Query into a dictionary
@@ -55,8 +51,8 @@ if ($_POST) {
         $_SESSION["ADVISOR_FNAME"] = $advisorDict["firstName"];
         $_SESSION["ADVISOR_LNAME"] = $advisorDict["lastName"];
 
-        // Redirecting to map.html
-        header('Location: map.html');
+        // Redirecting to index.html
+        header('Location:../index.html');
     } else {
         echo "Login FAILED";
     }
@@ -84,7 +80,7 @@ if ($_POST) {
                         <input id="username" type="username" placeholder="name123" name="username" autocapitalize="off" autocorrect="off" required> </div>
                     <div class="pure-control-group">
                         <label for="password">Password </label>
-                        <input type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$" autocapitalize="off" autocorrect="off" placeholder="Password" id="password" name="password" required>                     
+                        <input type="password" autocapitalize="off" autocorrect="off" placeholder="Password" id="password" name="password" required>                     
                     </div>
                     <div class="pure-controls">
                         <button type="submit" class="pure-button pure-u-24-24 pure-button-primary">Login</button>
