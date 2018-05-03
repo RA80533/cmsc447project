@@ -24,7 +24,7 @@
 	/*
 	if (isset($_SESSION["HAS_LOGGED_IN"])) {
 		if ($_SESSION["HAS_LOGGED_IN"]) {
-			header('Location:../index.html');
+			header('Location: map.html');
 		}
 	}
 	*/
@@ -50,11 +50,6 @@
 
 			// Assigning to session values based on what data is found
 			$_SESSION["HAS_LOGGED_IN"] = true;
-			//$_SESSION["SCHEDULE_VIEW"] = false;
-			$_SESSION["ADVISOR_EMAIL"] = $advisorDict["email"];
-			$_SESSION["ADVISOR_ID"] = $advisorDict["advisorID"];
-			$_SESSION["ADVISOR_FNAME"] = $advisorDict["firstName"];
-			$_SESSION["ADVISOR_LNAME"] = $advisorDict["lastName"];
 			*/
 			// Redirecting to index.html
 			//header('Location:../index.html');
