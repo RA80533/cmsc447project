@@ -7,11 +7,16 @@ var offlineStorageSupported = (typeof(Storage) !== "undefined");
 var store;
 var favZips = Array()
 
+var clearFavZips = function () {
+	var favContainer = document.getElementById("favorites_container");
+	favContainer.innerHTML = ""
+}
+
 var loadFavZips = function () {
 	var favContainer = document.getElementById("favorites_container");
 
 	for (var i = 0; i < favZips.length; i++) {
-		favContainer.innerHTML = favContainer.innerHTML + "<button>" + favZips[i] + "</button>";
+		favContainer.innerHTML = favContainer.innerHTML + "<button onclick='removeFromFavorites(" + favZips[i] + ")'>" + favZips[i] + "</button>";
 	}
 }
 
@@ -38,5 +43,15 @@ if (offlineStorageSupported) {
 var addToFavorites = function (zipCode) {
 	favZips.push(zipCode);
 	updateZipStore();
+	clearFavZips();
+	loadFavZips();
 	// console.log(zipCode + " added to favs");
 }
+
+var removeFromFavorites = function (zipCode) {
+	var index = favZips.indexOf(zipCode);
+	if (index > -1) favZips.splice(index, 1);
+	updateZipStore();
+	clearFavZips();
+	loadFavZips();
+} 
