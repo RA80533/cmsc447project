@@ -1,18 +1,12 @@
 <!DOCTYPE html>
- //<?php
- //	session_start();
- //	include '../dbconfig.php';
- //	$open_connection = connectToDB();
- //
-	// Checks to see if the user is logged in, if so it redirects them to homepage
-	if (isset($_SESSION["HAS_LOGGED_IN"])) {
-		if ($_SESSION["HAS_LOGGED_IN"]) {
-			header('Location: map.html');
+	<?php
+		// Checks to see if the user is logged in, if so it redirects them to homepage
+		if (isset($_SESSION["HAS_LOGGED_IN"])) {
+			if ($_SESSION["HAS_LOGGED_IN"]) {
+				header('Location:../index.html');
+			}
 		}
-	}
-?>
-
-    <html>
+	?>
 
     <head>
         <title>Account Registration</title>
