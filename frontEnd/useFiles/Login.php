@@ -58,7 +58,7 @@
 	
     <head>
         <title>ZipCompare Login Portal</title>
-        <link rel="stylesheet" type="text/css" href="../../css-pure/pure-min.css">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.0/build/pure-min.css">
         <link rel="stylesheet" type="text/css" href="css/index.css"> 
 	</head>
 
@@ -90,7 +90,7 @@
             </div>
             <br>
             <div id="forgot-pass">
-                <a href="../forms/editAdvisor.php">
+                <a href="editAccount.php">
                     Change your password?
                 </a>
             </div>

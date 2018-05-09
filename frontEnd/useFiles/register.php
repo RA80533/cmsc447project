@@ -65,7 +65,7 @@
             </form>
             <div id="register">
                 <br> Have an Account? &nbsp;
-                <a href="Login.php">
+                <a href="login.php">
                     <button class="pure-button" type="button">Login</button>
                 </a>
             </div>
