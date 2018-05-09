@@ -43,7 +43,7 @@
                     <div class="pure-control-group popup" onclick="passwordExample()">
                         <label for="password">Password </label>
                         <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" placeholder="Password" id="password" name="password" required>
-							<span class="popuptext" id="myPopup"><br>Password requires:<br>1 uppercase<br>1 lowercase<br>At least 6 characters</span>
+							<span class="popuptext" id="myPopup"><br>Password requires:<br>1 uppercase<br>1 lowercase<br>6 or more characters</span>
 						<!-- <img onmousedown="document.getElementById('password').type='text'" onmouseup="document.getElementById('password').type='password'" src="http://www.freeiconspng.com/uploads/eyeball-icon-png-eye-icon-1.png" id="check_pass" style="width:25px;height:25px;" align="top"> --></div>
 
                     <div class="pure-control-group">
