@@ -1,18 +1,12 @@
 <!DOCTYPE html>
- //<?php
- //	session_start();
- //	include '../dbconfig.php';
- //	$open_connection = connectToDB();
- //
-	// Checks to see if the user is logged in, if so it redirects them to homepage
-	if (isset($_SESSION["HAS_LOGGED_IN"])) {
-		if ($_SESSION["HAS_LOGGED_IN"]) {
-			header('Location: map.html');
+	<?php
+		// Checks to see if the user is logged in, if so it redirects them to homepage
+		if (isset($_SESSION["HAS_LOGGED_IN"])) {
+			if ($_SESSION["HAS_LOGGED_IN"]) {
+				header('Location:../index.html');
+			}
 		}
-	}
-?>
-
-    <html>
+	?>
 
     <head>
         <title>Account Registration</title>
@@ -49,7 +43,7 @@
                     <div class="pure-control-group popup" onclick="passwordExample()">
                         <label for="password">Password </label>
                         <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" placeholder="Password" id="password" name="password" required>
-							<span class="popuptext" id="myPopup"><br>Password requires:<br>1 uppercase<br>1 lowercase<br>At least 6 characters</span>
+							<span class="popuptext" id="myPopup"><br>Password requires:<br>1 uppercase<br>1 lowercase<br>6 or more characters</span>
 						<!-- <img onmousedown="document.getElementById('password').type='text'" onmouseup="document.getElementById('password').type='password'" src="http://www.freeiconspng.com/uploads/eyeball-icon-png-eye-icon-1.png" id="check_pass" style="width:25px;height:25px;" align="top"> --></div>
 
                     <div class="pure-control-group">
@@ -71,7 +65,7 @@
             </form>
             <div id="register">
                 <br> Have an Account? &nbsp;
-                <a href="Login.php">
+                <a href="login.php">
                     <button class="pure-button" type="button">Login</button>
                 </a>
             </div>

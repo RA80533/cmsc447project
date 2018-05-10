@@ -132,11 +132,11 @@ body { background-color: lightyellow; }
 
     <div class="w3-display-container w3-blue w3-border w3-border-brown w3-xlarge w3-josefin w3-half w3-center w3-mobile" style="height:650px;" id="user_favorite_list">
 
-      <div class="w3-display-middle w3-mobile">
+      <div class="w3-display-middle w3-mobile" id="favorites_container">
 
-        Query the DB to get the user's favorites. I will add code to
+        <!--Query the DB to get the user's favorites. I will add code to
         create a button for each one,<br>
-        and populate the data in the divs on this page. 
+        and populate the data in the divs on this page. -->
 
       </div>
 
@@ -546,7 +546,7 @@ function getZipInfo(latLng, map){
       // Zip not in the array.
       if(zipCheck() && num_zips_selected < 3){
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
         
       }
@@ -554,7 +554,7 @@ function getZipInfo(latLng, map){
       // Zip already in the array.
       else if(!zipCheck() && num_zips_selected <= 3){ 
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
 
       }
@@ -562,7 +562,7 @@ function getZipInfo(latLng, map){
       // Just display the zip data.
       else{
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
              
@@ -599,21 +599,21 @@ function zipButtonDisplay(zipCode){
       // Zip not in the array.
       if(zipCheck() && num_zips_selected < 3){
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
 
       // Zip already in the array.
       else if(!zipCheck() && num_zips_selected <= 3){ 
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
 
       // Just display the zip data.
       else{
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
    
@@ -645,7 +645,7 @@ function addToList() {
         // the number of zip codes there.
         zip_arr[num_zips_selected] = glob_zip;           
         num_zips_selected = num_zips_selected + 1;
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container w3-padding-small"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove from Comparison</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container w3-padding-small"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove from Comparison</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
         setZipList();
 
      }
@@ -683,7 +683,7 @@ function removeFromList() {
   // Since we just removed a zip code, we know that
   // the currently selected zip div can be updated to
   // offer to re-add the one which was removed.
-  document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+  document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
 }
 
@@ -787,7 +787,7 @@ function zipSearch(){
       // Zip not in the array.
       if(zipCheck() && num_zips_selected < 3){
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
         
       }
@@ -795,14 +795,14 @@ function zipSearch(){
       // Zip already in the array.
       else if(!zipCheck() && num_zips_selected <= 3){ 
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
 
       // Just display the zip data.
       else{
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites()">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
   
@@ -900,5 +900,7 @@ function openUITab(evt, tabName) {
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH5UU9WmR_PRTMPffERDuR9a4f_yimVQY&amp;callback=initMap">
 </script>
+
+<script src="js/offstorage.js"></script>
   
 </html>
