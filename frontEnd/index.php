@@ -34,7 +34,7 @@
 			//$password = ($_POST["password"]);
 			$password = md5($_POST["password"]); //replace md5 with name of server
 			// Search if user exists in DB
-			$search_account = "SELECT * FROM accounts WHERE userName = '$username' AND password = '$password';";
+			$search_account = "SELECT * FROM accounts WHERE username = '$username' AND password = '$password';";
 			
 			$counter = 0;
 			
@@ -46,6 +46,7 @@
 			if ($counter == 1) {
 				// Set session variable HAS_LOGGIN_IN to true.
 				$_SESSION["HAS_LOGGED_IN"] = true;
+				$_SESSION["USERNAME"] = $username;
 				
 				header('Location:map.php');
 		} else {

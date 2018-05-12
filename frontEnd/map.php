@@ -23,6 +23,14 @@ https://www.data.gov/
 			header('Location:index.php');
 		}
 	}
+	
+	$db = new PDO("sqlite:db/447db.sqlite") or die("Unable to open the database.");
+	$username = $_SESSION["USERNAME"];
+
+	if(isset($_POST['zip1'])){
+		$zip1 = $_POST['zip1'];
+		echo $zip1;
+	}
 ?>
 <html> 
 
@@ -237,9 +245,22 @@ body { background-color: lightyellow; }
 
       <div class="w3-display-middle w3-mobile">
 
-        Query the DB to get the user's account information.
-        I will add whatever features we need.
-
+		<?php
+			$query = "SELECT * FROM accounts WHERE username = '$username'";
+			foreach ($db->query($query) as $row){
+				echo "Username: ";
+				echo $row[1];
+				echo "<br>First Name: ";
+				echo $row[3];
+				echo "<br>Last Name: ";
+				echo $row[4];
+				echo "<br>Email: ";
+				echo $row[5];
+				echo "<br>Zipcode: ";
+				echo $row[6];
+			}
+		?>
+		
       </div>
 
     </div>
