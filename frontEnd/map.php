@@ -779,7 +779,7 @@ function setZipList(){
 
   else if(num_zips_selected == 1){
 
-    document.getElementById('zip_list').innerHTML = '<form class="w3-container w3-medium"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip1"></button></form>';
+    document.getElementById('zip_list').innerHTML = '<form class="w3-container w3-medium"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip1" name = "zip1"></button></form>';
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 1];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 1];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 1])");
@@ -789,7 +789,7 @@ function setZipList(){
   // Add two buttons.
   else if(num_zips_selected == 2){
 
-    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';
+    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1" name="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip2" name="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 2];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 2];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 2])");
@@ -804,7 +804,7 @@ function setZipList(){
   // Add three buttons.
   else if(num_zips_selected == 3){
 
-    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right"  id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip3"></button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';  
+    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1" name="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right"  id="zip2" name="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip3" name="zip3"></button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';  
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 3];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 3];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 3])");
