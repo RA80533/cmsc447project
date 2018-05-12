@@ -14,16 +14,18 @@ https://blog.vizuri.com/how-to-create-a-choropleth-map-with-geojson-and-google-m
 https://www.data.gov/
 
 -->
-
 <!DOCTYPE html>
+
 <?php
-	session_start();
+/*	session_start();
 	if (!isset($_SESSION["HAS_LOGGED_IN"])) {
 		if (!$_SESSION["HAS_LOGGED_IN"]) {
 			header('Location:index.php');
 		}
 	}
+*/
 ?>
+
 <html> 
 
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -840,6 +842,7 @@ function zipSearch(){
 
     }
 
+    zipCode = Number(zipCode);
     if (zipCode && (country == 'US')) {
  
       glob_zip = zipCode;  
