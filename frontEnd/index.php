@@ -8,7 +8,7 @@
 		session_start();
 		
 		// Connect to the SQLite database
-		$db = new PDO("sqlite:../db/447db.sqlite") or die("Unable to open the database.");
+		$db = new PDO("sqlite:db/447db.sqlite") or die("Unable to open the database.");
 
 		/* This will display the accounts table.
 		$query = "SELECT * FROM accounts WHERE 1";
@@ -31,8 +31,8 @@
 
 		if ($_POST) {
 			$username = ($_POST["username"]);
-			$password = ($_POST["password"]); //replace md5 with name of server
-			//$password = md5($_POST["password"]); //replace md5 with name of server
+			//$password = ($_POST["password"]);
+			$password = md5($_POST["password"]); //replace md5 with name of server
 			// Search if user exists in DB
 			$search_account = "SELECT * FROM accounts WHERE userName = '$username' AND password = '$password';";
 			
@@ -47,7 +47,7 @@
 				// Set session variable HAS_LOGGIN_IN to true.
 				$_SESSION["HAS_LOGGED_IN"] = true;
 				
-				echo "Login Successful";
+				header('Location:map.php');
 		} else {
 				echo "Login FAILED";
 		}
@@ -59,7 +59,7 @@
     <head>
         <title>ZipCompare Login Portal</title>
         <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.0/build/pure-min.css">
-        <link rel="stylesheet" type="text/css" href="css/index.css"> 
+        <link rel="stylesheet" type="text/css" href="useFiles/css/index.css"> 
 	</head>
 
     <body>
@@ -84,7 +84,7 @@
             </form>
             <div id="register">
                 <br> Create an Account &nbsp;
-                <a href="index.php">
+                <a href="useFiles/register.php">
                     <button class="pure-button" type="button">Register</button>
                 </a>
             </div>
