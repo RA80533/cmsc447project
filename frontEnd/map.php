@@ -1,6 +1,6 @@
 <!-- 
 
-File Name: map.php
+File Name: map.html
 
 Description: This file contains code to display and make
 appropriate computations for team Purple Parrot's version
