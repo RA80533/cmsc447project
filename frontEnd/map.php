@@ -23,7 +23,30 @@ https://www.data.gov/
 			header('Location:index.php');
 		}
 	}
+
 */
+
+	
+	$db = new PDO("sqlite:db/447db.sqlite") or die("Unable to open the database.");
+	$username = $_SESSION["USERNAME"];
+	
+	$zipCodes = [];
+	
+	// Store all the zip codes in an array
+	$count = 0;
+	$query = "SELECT * FROM Restaurants WHERE 1";
+	foreach ($db->query($query) as $row){
+		$zipCodes[$count] = $row;
+		$count++;
+	}
+	
+	foreach($zipCodes as $row){
+		// $row[0] = Zipcode
+		// echo $row[1] = # of Chic-fil-a
+		// echo $row[2] = # of Taco Bell
+		// echo $row[3] = $ of Starbucks
+	}
+
 ?>
 
 <html> 
@@ -239,9 +262,22 @@ body { background-color: lightyellow; }
 
       <div class="w3-display-middle w3-mobile">
 
-        Query the DB to get the user's account information.
-        I will add whatever features we need.
-
+		<?php
+			$query = "SELECT * FROM accounts WHERE username = '$username'";
+			foreach ($db->query($query) as $row){
+				echo "Username: ";
+				echo $row[1];
+				echo "<br>First Name: ";
+				echo $row[3];
+				echo "<br>Last Name: ";
+				echo $row[4];
+				echo "<br>Email: ";
+				echo $row[5];
+				echo "<br>Zipcode: ";
+				echo $row[6];
+			}
+		?>
+		
       </div>
 
     </div>
@@ -760,7 +796,7 @@ function setZipList(){
 
   else if(num_zips_selected == 1){
 
-    document.getElementById('zip_list').innerHTML = '<form class="w3-container w3-medium"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip1"></button></form>';
+    document.getElementById('zip_list').innerHTML = '<button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip1" name = "zip1"></button>';
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 1];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 1];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 1])");
@@ -770,7 +806,7 @@ function setZipList(){
   // Add two buttons.
   else if(num_zips_selected == 2){
 
-    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';
+    document.getElementById('zip_list').innerHTML = '<button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1" name="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip2" name="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip_comp">Perform Comparison</button>';
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 2];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 2];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 2])");
@@ -785,7 +821,7 @@ function setZipList(){
   // Add three buttons.
   else if(num_zips_selected == 3){
 
-    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right"  id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip3"></button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';  
+    document.getElementById('zip_list').innerHTML = '<button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1" name="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right"  id="zip2" name="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip3" name="zip3"></button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button>';  
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 3];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 3];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 3])");
