@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 	<?php
+		session_start()
 		// Checks to see if the user is logged in, if so it redirects them to homepage
 		if (isset($_SESSION["HAS_LOGGED_IN"])) {
 			if ($_SESSION["HAS_LOGGED_IN"]) {
-				header('Location:../index.html');
+				header('Location:../map.html');
 			}
 		}
 	?>
@@ -19,7 +20,7 @@
             <h1 id="reg-title">Account Registration</h1>
 
             <!-- Use the htmlspecial chars to protect from XSS and CSSR -->
-            <form class="pure-form pure-form-aligned" action="../forms/registerAdvisor.php" method="post">
+            <form class="pure-form pure-form-aligned" action="../useFiles/register_success.php" method="post">
                 <fieldset>
                     <div class="pure-control-group">
                         <label for="fName">First Name </label>
@@ -39,13 +40,21 @@
                                 }
                         ?>
                     </div>
-
+					
+					<div class="pure-control-group popup">
+                        <label for="username">Username</label>
+                        <input pattern = "^[a-z0-9_-]{3,15}$" placeholder="Username" id="username" name="username" required>
+							<span class="popuptext" id="myPopup"><br>Username requires:<br>At least 3 characters<br>Must be alphanumeric, or with hyphen or underscore<br>At most 15 characters</span>
+						<!-- <img onmousedown="document.getElementById('password').type='text'" onmouseup="document.getElementById('password').type='password'" src="http://www.freeiconspng.com/uploads/eyeball-icon-png-eye-icon-1.png" id="check_pass" style="width:25px;height:25px;" align="top"> --></div>
+					<br>
+					
                     <div class="pure-control-group popup" onclick="passwordExample()">
                         <label for="password">Password </label>
                         <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" placeholder="Password" id="password" name="password" required>
 							<span class="popuptext" id="myPopup"><br>Password requires:<br>1 uppercase<br>1 lowercase<br>6 or more characters</span>
 						<!-- <img onmousedown="document.getElementById('password').type='text'" onmouseup="document.getElementById('password').type='password'" src="http://www.freeiconspng.com/uploads/eyeball-icon-png-eye-icon-1.png" id="check_pass" style="width:25px;height:25px;" align="top"> --></div>
-
+					
+					
                     <div class="pure-control-group">
                         <label for="confirm_password">Confirm Password</label>
                         <input type="password" placeholder="Confirm Password" id="confirm_password" required>
@@ -65,7 +74,7 @@
             </form>
             <div id="register">
                 <br> Have an Account? &nbsp;
-                <a href="login.php">
+                <a href="../index.php">
                     <button class="pure-button" type="button">Login</button>
                 </a>
             </div>

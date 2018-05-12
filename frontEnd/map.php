@@ -1,6 +1,6 @@
 <!-- 
 
-File Name: map.html
+File Name: map.php
 
 Description: This file contains code to display and make
 appropriate computations for team Purple Parrot's version
@@ -16,6 +16,14 @@ https://www.data.gov/
 -->
 
 <!DOCTYPE html>
+<?php
+	session_start();
+	if (!isset($_SESSION["HAS_LOGGED_IN"])) {
+		if (!$_SESSION["HAS_LOGGED_IN"]) {
+			header('Location:index.php');
+		}
+	}
+?>
 <html> 
 
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
