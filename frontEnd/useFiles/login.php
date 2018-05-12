@@ -84,7 +84,7 @@
             </form>
             <div id="register">
                 <br> Create an Account &nbsp;
-                <a href="index.php">
+                <a href="register.php">
                     <button class="pure-button" type="button">Register</button>
                 </a>
             </div>

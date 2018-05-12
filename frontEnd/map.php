@@ -56,6 +56,7 @@ body { background-color: lightyellow; }
   <!-- Map tab -->
   <div class="w3-container w3-animate-top tab_view w3-mobile" id="map_tab">
  
+    <!-- Clear Zip Data Modal -->
     <div id="clear_modal" class="w3-modal w3-animate-opacity w3-josefin w3-mobile">
 
       <div class="w3-modal-content w3-card-4 w3-josefin w3-mobile">
@@ -67,6 +68,42 @@ body { background-color: lightyellow; }
       <div class="w3-container w3-khaki w3-josefin">
         <button class="w3-bar-item w3-button w3-hover-green w3-mobile" onclick="clearAllZips()">Yes</button>
         <button class="w3-bar-item w3-button w3-hover-red w3-mobile" onclick="hideModal()">No</button>
+      </div>
+      <footer class="w3-container w3-brown w3-mobile">
+        <p>ZipCompare</p>
+      </div>
+
+    </div>
+
+    <!-- Invalid Zip Modal -->
+    <div id="zip_not_found" class="w3-modal w3-animate-opacity w3-josefin w3-mobile">
+
+      <div class="w3-modal-content w3-card-4 w3-josefin w3-mobile">
+        <header class="w3-container w3-blue"> 
+          <span onclick="document.getElementById('clear_modal').style.display='none'" 
+          class="w3-button w3-large w3-display-topright w3-mobile">&times;</span>
+          <h3>You entered a zip code outside the United States or which is otherwise invalid.</h3>
+      </header>
+      <div class="w3-container w3-khaki w3-josefin">
+        <button class="w3-bar-item w3-button w3-hover-green w3-mobile" onclick="hideModal()">Return</button>
+      </div>
+      <footer class="w3-container w3-brown w3-mobile">
+        <p>ZipCompare</p>
+      </div>
+
+    </div>
+
+    <!-- Invalid Zip Modal -->
+    <div id="invalid_click" class="w3-modal w3-animate-opacity w3-josefin w3-mobile">
+
+      <div class="w3-modal-content w3-card-4 w3-josefin w3-mobile">
+        <header class="w3-container w3-blue"> 
+          <span onclick="document.getElementById('clear_modal').style.display='none'" 
+          class="w3-button w3-large w3-display-topright w3-mobile">&times;</span>
+          <h3>You clicked an area outside the United States which is not allowed.</h3>
+      </header>
+      <div class="w3-container w3-khaki w3-josefin">
+        <button class="w3-bar-item w3-button w3-hover-green w3-mobile" onclick="hideModal()">Return</button>
       </div>
       <footer class="w3-container w3-brown w3-mobile">
         <p>ZipCompare</p>
@@ -518,6 +555,7 @@ function zipZoomCloser(latLng, map){
 function getZipInfo(latLng, map){
 
   var geocoder = new google.maps.Geocoder();
+  var country;
   geocoder.geocode({'latLng': latLng}, function(results, status){
          
     // Ensure the status is good.
@@ -535,11 +573,17 @@ function getZipInfo(latLng, map){
 
         }
 
+        if (chk.types[0] == 'country' || chk.types[0] == 'political'){
+
+          country = chk.short_name;
+
+        }
+
       }
 
     }
 
-    if (zipCode) {
+    if (zipCode && (country == 'US')) {
  
       glob_zip = zipCode;         
        
@@ -567,6 +611,8 @@ function getZipInfo(latLng, map){
       }
              
     }
+
+    else{ invClickModal(); }
   
       
 
@@ -704,7 +750,7 @@ function setZipList(){
 
   else if(num_zips_selected == 1){
 
-    document.getElementById('zip_list').innerHTML = '<div class="w3-container w3-medium"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip1"></button></div>';
+    document.getElementById('zip_list').innerHTML = '<form class="w3-container w3-medium"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip1"></button></form>';
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 1];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 1];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 1])");
@@ -714,7 +760,7 @@ function setZipList(){
   // Add two buttons.
   else if(num_zips_selected == 2){
 
-    document.getElementById('zip_list').innerHTML = '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip_comp">Perform Comparison</button></div>';
+    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 2];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 2];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 2])");
@@ -729,7 +775,7 @@ function setZipList(){
   // Add three buttons.
   else if(num_zips_selected == 3){
 
-    document.getElementById('zip_list').innerHTML = '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right"  id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip3"></button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" id="zip_comp">Perform Comparison</button></div>';  
+    document.getElementById('zip_list').innerHTML = '<form class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right" id="zip1"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top w3-margin-right"  id="zip2"></button><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" id="zip3"></button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" type="submit" id="zip_comp">Perform Comparison</button></form>';  
     document.getElementById('zip1').value = zip_arr[num_zips_selected - 3];
     document.getElementById('zip1').innerHTML = zip_arr[num_zips_selected - 3];
     document.getElementById('zip1').setAttribute("onclick", "javascript:  zipButtonDisplay(zip_arr[num_zips_selected - 3])");
@@ -752,6 +798,8 @@ function zipSearch(){
 
   // Grab the zip code entered by the user.
   var address = document.getElementById("userzip").value;
+  var country;
+  var zipCode;
 
   // Attempt to geocode using the user's entered zip code.
   var geocoder = new google.maps.Geocoder();
@@ -774,13 +822,17 @@ function zipSearch(){
 
             }
 
+            if (chk.types[0] == 'country' || chk.types[0] == 'political'){
+
+              country = chk.short_name;
+
+            }
+
       }
 
     }
 
-    else{ alert("We couldn't find your zip code."); }
-
-    if (zipCode) {
+    if (zipCode && (country == 'US')) {
  
       glob_zip = zipCode;  
      
@@ -806,6 +858,12 @@ function zipSearch(){
 
       }
   
+    }
+ 
+    else {
+
+      invZipModal();
+
     }
 
   }); 
@@ -840,6 +898,8 @@ function zipCheck(){
 function hideModal(){
 
   document.getElementById('clear_modal').style.display = "none";
+  document.getElementById('zip_not_found').style.display = "none";
+  document.getElementById('invalid_click').style.display = "none";
 
 }
 
@@ -850,6 +910,28 @@ function clearModal(){
   var modal;
 
   modal = document.getElementById('clear_modal');
+  modal.style.display = "inline-block";
+
+}
+
+// Handles the display of the appropriate modal
+// when an invalid zip code is entered.
+function invZipModal(){
+
+  var modal;
+
+  modal = document.getElementById('zip_not_found');
+  modal.style.display = "inline-block";
+
+}
+
+// Handles the display of the appropriate modal
+// when the user clicks an invalid area on the map.
+function invClickModal(){
+
+  var modal;
+
+  modal = document.getElementById('invalid_click');
   modal.style.display = "inline-block";
 
 }
