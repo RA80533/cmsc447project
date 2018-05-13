@@ -31,7 +31,7 @@ https://www.data.gov/
 	
 	$db = new PDO("sqlite:db/447db.sqlite") or die("Unable to open the database.");
 	$username = $_SESSION["USERNAME"];
-        $GLOBALS['zip1_chik'] = 0;
+
         $chik = 0;
         $taco = 0;
         $star = 0;
@@ -60,8 +60,6 @@ https://www.data.gov/
 	}
 
 ?>
-
-// alert(js_zip_arr[1][0] + js_zip_arr[1][1] + " " + js_zip_arr[1][2] + " " + js_zip_arr[1][3]);
 
 </script>
 
