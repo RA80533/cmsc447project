@@ -16,19 +16,25 @@ https://www.data.gov/
 -->
 <!DOCTYPE html>
 
+<script type='text/javascript'>
 <?php
-/*	session_start();
+
+	session_start();
 	if (!isset($_SESSION["HAS_LOGGED_IN"])) {
 		if (!$_SESSION["HAS_LOGGED_IN"]) {
 			header('Location:index.php');
 		}
 	}
 
-*/
+
 
 	
 	$db = new PDO("sqlite:db/447db.sqlite") or die("Unable to open the database.");
 	$username = $_SESSION["USERNAME"];
+        $GLOBALS['zip1_chik'] = 0;
+        $chik = 0;
+        $taco = 0;
+        $star = 0;
 	
 	$zipCodes = [];
 	
@@ -36,9 +42,15 @@ https://www.data.gov/
 	$count = 0;
 	$query = "SELECT * FROM Restaurants WHERE 1";
 	foreach ($db->query($query) as $row){
+
 		$zipCodes[$count] = $row;
 		$count++;
+
 	}
+  
+        // Translate the php array into javascript.
+        $js_arr = json_encode($zipCodes);
+        echo "var js_zip_arr = ". $js_arr . ";\n";
 	
 	foreach($zipCodes as $row){
 		// $row[0] = Zipcode
@@ -48,6 +60,10 @@ https://www.data.gov/
 	}
 
 ?>
+
+// alert(js_zip_arr[1][0] + js_zip_arr[1][1] + " " + js_zip_arr[1][2] + " " + js_zip_arr[1][3]);
+
+</script>
 
 <html> 
 
@@ -126,7 +142,7 @@ body { background-color: lightyellow; }
 
     </div>
 
-    <!-- Invalid Zip Modal -->
+    <!-- Invalid Clik Modal -->
     <div id="invalid_click" class="w3-modal w3-animate-opacity w3-josefin w3-mobile">
 
       <div class="w3-modal-content w3-card-4 w3-josefin w3-mobile">
@@ -135,6 +151,24 @@ body { background-color: lightyellow; }
           class="w3-button w3-large w3-display-topright w3-mobile">&times;</span>
           <h3>You clicked an area outside the United States which is not allowed.</h3>
       </header>
+      <div class="w3-container w3-khaki w3-josefin">
+        <button class="w3-bar-item w3-button w3-hover-green w3-mobile" onclick="hideModal()">Return</button>
+      </div>
+      <footer class="w3-container w3-brown w3-mobile">
+        <p>ZipCompare</p>
+      </div>
+
+    </div>
+
+    <!-- Zip Compare Modal -->
+    <div id="zip_compare_mod" class="w3-modal w3-animate-opacity w3-josefin w3-mobile">
+
+      <div class="w3-modal-content w3-card-4 w3-josefin w3-mobile">
+        <header class="w3-container w3-blue"> 
+          <span onclick="document.getElementById('clear_modal').style.display='none'" 
+          class="w3-button w3-large w3-display-topright w3-mobile">&times;</span>
+          <h4 id="zip_com_mod_header"></h4>
+        </header>
       <div class="w3-container w3-khaki w3-josefin">
         <button class="w3-bar-item w3-button w3-hover-green w3-mobile" onclick="hideModal()">Return</button>
       </div>
@@ -156,6 +190,15 @@ body { background-color: lightyellow; }
 
     <!-- Zip Frame -->
     <div class="w3-container w3-border w3-border-brown w3-blue w3-xlarge w3-josefin w3-quarter w3-center w3-mobile" style="height:650px;" id="zip_frame">
+
+      <!-- Hidden post form. -->
+      <form id="sub_zip_data" method="post">
+        <input type="hidden" name="zip1_val" id="zip1_val" value="">
+        <input type="hidden" name="zip1_chik" id="zip1_chik" value="">
+        <input type="hidden" name="zip1_taco" id="zip1_taco" value="">
+        <input type="hidden" name="zip1_star" id="zip1_star" value="">
+        <input type="submit" style="display: none;">
+      </form>
 
       <!-- Current Zip -->
       <div class="w3-display-container w3-border w3-border-khaki w3-brown w3-large w3-josefin w3-rest w3-center w3-margin w3-text-white w3-mobile" style="height:250px;" id="current_zip">
@@ -263,6 +306,7 @@ body { background-color: lightyellow; }
       <div class="w3-display-middle w3-mobile">
 
 		<?php
+
 			$query = "SELECT * FROM accounts WHERE username = '$username'";
 			foreach ($db->query($query) as $row){
 				echo "Username: ";
@@ -276,6 +320,7 @@ body { background-color: lightyellow; }
 				echo "<br>Zipcode: ";
 				echo $row[6];
 			}
+
 		?>
 		
       </div>
@@ -539,6 +584,7 @@ function mapZoom(latLng, map) {
 
 }
 
+// Generates colors for all the states.
 function setStateColors(){
 
   // Set all the colors of different states.
@@ -568,8 +614,6 @@ function zipZoom(latLng, map) {
   // Zooms in to display zips.
   map.setZoom(new_zoom);
    
-  //marker.setMap(null);
-
 }
 
 function zipZoomCloser(latLng, map){
@@ -629,14 +673,31 @@ function getZipInfo(latLng, map){
 
     }
 
+    // Validate that something was returned, 
+    // and it's in the U.S.
     if (zipCode && (country == 'US')) {
  
-      glob_zip = zipCode;         
-       
+      glob_zip = zipCode; 
+      var zip_chik;
+      var zip_taco;
+      var zip_star;
+
+      for(var i = 1; i < js_zip_arr.length; i++){
+
+        if (js_zip_arr[i][0] == glob_zip){
+
+          zip_chik = js_zip_arr[i][1];
+          zip_taco = js_zip_arr[i][2];
+          zip_star = js_zip_arr[i][3];
+
+        }      
+
+      }
+
       // Zip not in the array.
       if(zipCheck() && num_zips_selected < 3){
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
         
       }
@@ -644,7 +705,7 @@ function getZipInfo(latLng, map){
       // Zip already in the array.
       else if(!zipCheck() && num_zips_selected <= 3){ 
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
 
       }
@@ -652,7 +713,7 @@ function getZipInfo(latLng, map){
       // Just display the zip data.
       else{
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
              
@@ -674,6 +735,9 @@ function zipButtonDisplay(zipCode){
 
       glob_zip = zipCode;
       var address = zipCode;
+      var zip_chik;
+      var zip_taco;
+      var zip_star;
 
       // Attempt to geocode using the user's entered zip code.
       var geocoder = new google.maps.Geocoder();
@@ -688,24 +752,36 @@ function zipButtonDisplay(zipCode){
 
       }); 
 
+      for(var i = 1; i < js_zip_arr.length; i++){
+
+        if (js_zip_arr[i][0] == glob_zip){
+
+          zip_chik = js_zip_arr[i][1];
+          zip_taco = js_zip_arr[i][2];
+          zip_star = js_zip_arr[i][3];
+
+        }      
+
+      }
+
       // Zip not in the array.
       if(zipCheck() && num_zips_selected < 3){
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
 
       // Zip already in the array.
       else if(!zipCheck() && num_zips_selected <= 3){ 
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
 
       // Just display the zip data.
       else{
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
    
@@ -733,11 +809,27 @@ function addToList() {
 
       if(zip_valid){
 
+        var zip_chik;
+        var zip_taco;
+        var zip_star;
+
+        for(var i = 1; i < js_zip_arr.length; i++){
+
+          if (js_zip_arr[i][0] == glob_zip){
+
+            zip_chik = js_zip_arr[i][1];
+            zip_taco = js_zip_arr[i][2];
+            zip_star = js_zip_arr[i][3];
+
+          }     
+
+        }
+
         // Add the zip code to the array, and increment
         // the number of zip codes there.
         zip_arr[num_zips_selected] = glob_zip;           
         num_zips_selected = num_zips_selected + 1;
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container w3-padding-small"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove from Comparison</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container w3-padding-small"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove from Comparison</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
         setZipList();
 
      }
@@ -752,6 +844,10 @@ function removeFromList() {
   // pull out those  that must be kept.
   var temp_list = [];
   var j = 0;
+  var zip_chik;
+  var zip_taco;
+  var zip_star;
+
   if (num_zips_selected > 0){
 
     for (var i = 0; i < 3; i++){
@@ -772,10 +868,23 @@ function removeFromList() {
   zip_arr = temp_list;
   setZipList();
 
+  for(var i = 1; i < js_zip_arr.length; i++){
+
+    if (js_zip_arr[i][0] == glob_zip){
+
+      zip_chik = js_zip_arr[i][1];
+      zip_taco = js_zip_arr[i][2];
+      zip_star = js_zip_arr[i][3];
+
+    }
+
+
+  }
+
   // Since we just removed a zip code, we know that
   // the currently selected zip div can be updated to
   // offer to re-add the one which was removed.
-  document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+  document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
 }
 
@@ -882,11 +991,26 @@ function zipSearch(){
     if (zipCode && (country == 'US')) {
  
       glob_zip = zipCode;  
+      var zip_chik;
+      var zip_taco;
+      var zip_star;
+
+      for(var i = 1; i < js_zip_arr.length; i++){
+
+        if (js_zip_arr[i][0] == glob_zip){
+
+          zip_chik = js_zip_arr[i][1];
+          zip_taco = js_zip_arr[i][2];
+          zip_star = js_zip_arr[i][3];
+
+        }    
+
+      }
      
       // Zip not in the array.
       if(zipCheck() && num_zips_selected < 3){
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="addToList()">Add and Compare</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
         
       }
@@ -894,14 +1018,14 @@ function zipSearch(){
       // Zip already in the array.
       else if(!zipCheck() && num_zips_selected <= 3){ 
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<div class="w3-container"><button class="w3-button w3-light-blue w3-display-bottom-middle w3-hover-blue w3-margin-top" onclick="removeFromList()">Remove Comparison List</button><button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
 
       // Just display the zip data.
       else{
 
-        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "DISPLAY OTHER ZIP DATA HERE" + "<BR>" + "<BR>" + "<BR>" + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
+        document.getElementById('current_zip').innerHTML = "Currently Selected Zip: " + zipCode + "<BR>" + "Restaurant Count: " + "<BR>" + '<img src="chik.png">' + " x" + zip_chik + " " + '<img src="taco.png">' + " x" + zip_taco + " " + '<img src="star.png">' + " x" + zip_star + '<button class="w3-button w3-light-blue w3-hover-blue w3-margin-top" onclick="addToFavorites(' + zipCode + ')">Add to Favorites</button></div>';
 
       }
   
@@ -947,6 +1071,7 @@ function hideModal(){
   document.getElementById('clear_modal').style.display = "none";
   document.getElementById('zip_not_found').style.display = "none";
   document.getElementById('invalid_click').style.display = "none";
+  document.getElementById('zip_compare_mod').style.display = "none";
 
 }
 
@@ -979,6 +1104,17 @@ function invClickModal(){
   var modal;
 
   modal = document.getElementById('invalid_click');
+  modal.style.display = "inline-block";
+
+}
+
+// Handles the display of the appropriate modal
+// when the user clicks an invalid area on the map.
+function zipCompModal(){
+
+  var modal;
+
+  modal = document.getElementById('zip_compare_mod');
   modal.style.display = "inline-block";
 
 }
@@ -1022,6 +1158,122 @@ function openUITab(evt, tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " w3-blue";
+
+}
+
+
+// Comparison function.
+function zipCompare(){
+
+  var zip1_chik;
+  var zip1_taco;
+  var zip1_star;
+
+  var zip2_chik;
+  var zip2_taco;
+  var zip2_star;
+
+  var zip3_chik;
+  var zip3_taco;
+  var zip3_star;
+
+  var meta_zip1;
+  var meta_zip2;
+  var meta_zip3;
+
+  // Grab the data to compute the scores for all 3 zip codes.
+  for(var i = 1; i < js_zip_arr.length; i++){
+
+    if (js_zip_arr[i][0] == zip_arr[0]){
+
+      zip1_chik = Number(js_zip_arr[i][1]);
+      zip1_taco = Number(js_zip_arr[i][2]);
+      zip1_star = Number(js_zip_arr[i][3]);
+
+    }
+
+    else if (js_zip_arr[i][0] == zip_arr[1]){
+
+      zip2_chik = Number(js_zip_arr[i][1]);
+      zip2_taco = Number(js_zip_arr[i][2]);
+      zip2_star = Number(js_zip_arr[i][3]);
+
+    }
+
+    else if (js_zip_arr[i][0] == zip_arr[2]){
+
+      zip3_chik = Number(js_zip_arr[i][1]);
+      zip3_taco = Number(js_zip_arr[i][2]);
+      zip3_star = Number(js_zip_arr[i][3]);
+
+    }    
+
+  }    
+
+  if (num_zips_selected == 2){
+
+    zip1_meta = 3 * zip1_chik + 2 * zip1_taco + zip1_star;
+    zip2_meta = 3 * zip2_chik + 2 * zip2_taco + zip2_star;
+
+    if (zip1_meta == zip2_meta){
+
+      document.getElementById('zip_com_mod_header').innerHTML = 'Both of the selected zip codes had the same score!' + "<BR>" + "Score => " + zip1_meta;
+
+    }
+
+    else if (zip1_meta > zip2_meta){
+
+      document.getElementById('zip_com_mod_header').innerHTML = zip_arr[0] + ' had the better score!' + "<BR>" +  "Scores => " + " [" + zip_arr[0] + " -> " + zip1_meta + "]" + " " + "[" + zip_arr[1] + " -> " + zip2_meta + "]";
+
+    }
+
+    else if (zip1_meta < zip2_meta){ 
+
+      document.getElementById('zip_com_mod_header').innerHTML = zip_arr[1] + ' had the better score!' + "<BR>" +  "Scores => " + " [" + zip_arr[1] + " -> " + zip2_meta + "]" + " " + "[" + zip_arr[0] + " -> " + zip1_meta + "]";
+
+    }
+
+
+  }
+
+  else{
+
+    zip1_meta = 3 * zip1_chik + 2 * zip1_taco + zip1_star;
+    zip2_meta = 3 * zip2_chik + 2 * zip2_taco + zip2_star;
+    zip3_meta = 3 * zip3_chik + 2 * zip3_taco + zip3_star;
+
+    // All equal.
+    if (zip1_meta == zip2_meta && zip1_meta == zip3_meta){
+
+      document.getElementById('zip_com_mod_header').innerHTML = 'All of the selected zip codes had the same score!' + "<BR>" + "Score => " + zip1_meta;
+
+    }
+
+    // Zip 1 best.
+    else if (zip1_meta > zip2_meta && zip1_meta > zip3_meta){
+
+      document.getElementById('zip_com_mod_header').innerHTML = zip_arr[0] + ' had the best score!' + "<BR>" +  "Scores => " + " [" + zip_arr[0] + " -> " + zip1_meta + "]" + " " + "[" + zip_arr[1] + " -> " + zip2_meta + "]" + " " + "[" + zip_arr[2] + " -> " + zip3_meta + "]";
+
+    }
+
+    // Zip 2 best.
+    else if (zip2_meta > zip1_meta && zip2_meta > zip3_meta){
+
+      document.getElementById('zip_com_mod_header').innerHTML = zip_arr[1] + ' had the best score!' + "<BR>" +  "Scores => " + " [" + zip_arr[1] + " -> " + zip2_meta + "]" + " " + "[" + zip_arr[0] + " -> " + zip1_meta + "]" + " " + "[" + zip_arr[2] + " -> " + zip3_meta + "]";
+
+    }
+
+    // Zip 3 best.
+    else if (zip3_meta > zip1_meta && zip3_meta > zip2_meta){
+
+      document.getElementById('zip_com_mod_header').innerHTML = zip_arr[2] + ' had the best score!' + "<BR>" +  "Scores => " + " [" + zip_arr[2] + " -> " + zip3_meta + "]" + " " + "[" + zip_arr[0] + " -> " + zip1_meta + "]" + " " + "[" + zip_arr[1] + " -> " + zip2_meta + "]";;
+
+    }
+
+  } 
+
+  zipCompModal();
+
 
 }
 
